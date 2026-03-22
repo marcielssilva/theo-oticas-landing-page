@@ -1,144 +1,178 @@
-📌 Visão Geral
+# 🕶️ Theo Óticas — Site Oficial
 
-O site da Theo Óticas é uma landing page institucional moderna, criada com foco em conversão rápida via WhatsApp e fortalecimento da presença digital da marca.
+![Status](https://img.shields.io/badge/status-online-success)
+![Deploy](https://img.shields.io/badge/deploy-vercel-black)
+![License](https://img.shields.io/badge/license-private-informational)
 
-A página apresenta a ótica de forma direta, com destaque para:
+🌐 **Acesse o site:** [https://theo-oticas-oficial.vercel.app/](https://theo-oticas-oficial.vercel.app/)
 
-Produtos (armações e lentes)
-Atendimento rápido
-Localização física
-Contato imediato
+---
 
-A proposta é simples: atrair, convencer e converter em poucos segundos.
+## 📌 Sobre o Projeto
 
-🎯 Objetivo do Site
-Apresentar a marca Theo Óticas
-Gerar leads via WhatsApp
-Direcionar usuários para o Instagram
-Expor diferenciais competitivos
-Reforçar confiança e autoridade local
-🧱 Estrutura da Página
-🔝 1. Header (Topo)
-Nome/logo da Theo Óticas
-Navegação simples
-Botão de contato (WhatsApp)
-🚀 2. Hero (Primeira dobra)
+Este repositório contém o site institucional da **Theo Óticas**, desenvolvido como uma landing page moderna focada em **conversão rápida via WhatsApp** e fortalecimento da presença digital.
 
-Seção mais importante do site.
+O projeto foi pensado para ser:
 
-Contém:
+* ⚡ Rápido
+* 📱 Responsivo
+* 🎯 Direto ao ponto
+* 💬 Focado em geração de leads
 
-Headline forte (foco em transformação visual)
-Subtítulo explicando proposta
-Botões:
-WhatsApp (principal)
-Instagram (prova social)
-⭐ 3. Destaques / Benefícios
+---
 
-Apresenta os principais diferenciais:
+## 🎯 Objetivo
 
-Grande variedade de armações
-Óculos prontos rapidamente
-Atendimento personalizado
+* Apresentar a marca Theo Óticas
+* Gerar contatos diretos pelo WhatsApp
+* Direcionar usuários para o Instagram
+* Destacar produtos e diferenciais
+* Aumentar a conversão de clientes locais
 
-👉 Esses pontos são reforçados também nas redes sociais da marca
+---
 
-🛍️ 4. Serviços / Produtos
-Óculos de grau
-Óculos de sol
-Lentes com tecnologia
-Estilo + conforto visual
+## 🧱 Estrutura do Site
 
-A marca se posiciona como:
+### 🔝 Header
 
-não só venda de óculos, mas experiência e imagem pessoal
+* Logo / Nome da marca
+* Navegação simples
+* Botão de WhatsApp
 
-🏢 5. Sobre a Empresa
+### 🚀 Hero (Seção principal)
 
-Apresenta:
+* Headline de impacto
+* Subtítulo estratégico
+* Botões:
 
-Proposta da Theo Óticas
-Posicionamento (moderna, acessível e estilosa)
-Atendimento próximo do cliente
-📍 6. Contato
+  * WhatsApp (CTA principal)
+  * Instagram
 
-Informações principais:
+### ⭐ Benefícios
 
-📍 Endereço:
-Rua Coronel Pedro Dias Batista, BOX 04
+* Armações modernas
+* Óculos prontos rapidamente
+* Atendimento personalizado
+
+### 🛍️ Produtos / Serviços
+
+* Óculos de grau
+* Óculos de sol
+* Lentes
+* Estilo + conforto visual
+
+### 🏢 Sobre
+
+* Apresentação da empresa
+* Posicionamento da marca
+
+### 📍 Contato
+
+* Endereço
+* WhatsApp
+* Instagram
+
+### 📣 CTA Final
+
+* Incentivo para ação imediata
+
+### 🔻 Footer
+
+* Direitos autorais
+* Endereço
+
+---
+
+## 📍 Informações da Empresa
+
+**Nome:** Theo Óticas
+**Endereço:** Rua Coronel Pedro Dias Batista, BOX 04
 Mercadão Municipal — Centro / Itapetininga
-📱 WhatsApp:
-(15) 99686-9669
-📸 Instagram:
-https://www.instagram.com/theo.oticas
-📣 7. CTA (Call To Action)
 
-Bloco final incentivando:
+**WhatsApp:** (15) 99686-9669
+**Instagram:** [https://www.instagram.com/theo.oticas](https://www.instagram.com/theo.oticas)
 
-Conversa imediata no WhatsApp
-Acompanhamento no Instagram
-🔻 8. Footer
-Direitos autorais
-Endereço resumido
-Identidade da marca
-🎨 Design e Identidade
-Paleta de cores
-Fundo escuro (premium)
-Amarelo/dourado (destaque)
-Branco/cinza (legibilidade)
-Estilo visual
-Moderno
-Elegante
-Minimalista
-Focado em conversão
-⚡ Funcionalidades
-Botão direto para WhatsApp
-Link para Instagram
-Navegação suave
-Layout responsivo
-Estrutura de landing page
-📱 Responsividade
+---
 
-O site foi projetado para:
+## 🎨 Design
 
-📱 Mobile (principal foco)
-📲 Tablet
-💻 Desktop
-💡 Estratégia de Conversão
+### Paleta de cores
 
-O site segue um modelo de funil curto:
+* Fundo escuro (premium)
+* Amarelo/dourado (destaque)
+* Branco/cinza (texto)
 
-Impacto visual (hero)
-Prova de valor (benefícios)
-Confiança (marca + local físico)
-Ação imediata (WhatsApp)
-🔧 Tecnologias (provável estrutura)
-HTML5
-CSS3 moderno
-JavaScript leve
-Deploy via Vercel
-🚀 Possíveis melhorias
-Integração com Google Maps
-Avaliações de clientes
-Catálogo com fotos reais
-SEO local (Google)
-Pixel Meta / Google Ads
-Página de promoções
-🧠 Posicionamento da Marca
+### Estilo
 
-A Theo Óticas se posiciona como:
+* Moderno
+* Elegante
+* Minimalista
+* Focado em conversão
 
-Acessível
-Moderna
-Rápida
-Estilosa
-Próxima do cliente
+---
 
-Com diferenciais como:
+## ⚡ Funcionalidades
 
-Grande variedade de armações
-Entrega rápida de óculos
-Foco em estilo e identidade visual
-© Licença
+* 📲 Botão direto para WhatsApp
+* 📸 Link para Instagram
+* 📜 Scroll suave
+* 📱 Layout responsivo
+* 🎯 Estrutura de landing page
 
-Uso livre para a Theo Óticas.
+---
+
+## 📱 Responsividade
+
+Compatível com:
+
+* 📱 Mobile (principal foco)
+* 📲 Tablet
+* 💻 Desktop
+
+---
+
+## 🧠 Estratégia de Conversão
+
+O site segue um funil direto:
+
+1. Impacto visual (Hero)
+2. Prova de valor (Benefícios)
+3. Confiança (Marca + localização física)
+4. Ação (WhatsApp)
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+* HTML5
+* CSS3
+* JavaScript
+* Vercel (deploy)
+
+---
+
+## 🚀 Como rodar o projeto
+
+```bash
+# clonar repositório
+ git clone <repo-url>
+
+# acessar pasta
+ cd projeto
+
+# abrir no navegador
+ open index.html
+```
+
+Ou apenas publique diretamente na Vercel / Netlify.
+
+---
+
+## 🔧 Melhorias Futuras
+
+* 📍 Integração com Google Maps
+* 🛒 Catálogo de produtos
+* ⭐ Avaliações de clientes
+* 📊 SEO local
+* 📈 Pixel Meta / Google Ads
+* 🧾 Página d

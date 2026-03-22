@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
+import ProductCarousel from "@/components/ProductCarousel";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import CTASection from "@/components/CTASection";
@@ -13,6 +14,7 @@ const Index = () => {
       <main>
         <Hero />
         <Services />
+        <ProductCarousel />
         <About />
         <Contact />
         <CTASection />
@@ -21,5 +23,8 @@ const Index = () => {
     </div>
   );
 };
+
+export default Index;
+
 
 export default Index;

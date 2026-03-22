@@ -11,6 +11,7 @@ const services = [
     title: "Armações Modernas",
     description:
       "Coleção completa de armações de grau para todos os estilos: clássico, moderno, esportivo e fashion. Encontre a que combina com você.",
+    href: null,
   },
   {
     icon: (
@@ -25,6 +26,7 @@ const services = [
     title: "Óculos de Sol",
     description:
       "Proteja seus olhos com elegância. Modelos nacionais e importados, com proteção UV400 e lentes de qualidade superior.",
+    href: null,
   },
   {
     icon: (
@@ -37,23 +39,30 @@ const services = [
     ),
     title: "Atendimento Personalizado",
     description:
-      "Nossa equipe está pronta para te ajudar a encontrar o produto ideal. Venha nos visitar no Mercadão Municipal de Itapetininga.",
+      "Nossa equipe está pronta para te ajudar a encontrar o produto ideal. Clique aqui e fale conosco agora mesmo!",
+    href: "#contato",
   },
 ];
 
 export default function Services() {
+  const handleCardClick = (href: string | null) => {
+    if (!href) return;
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section id="servicos" className="py-24 bg-background">
       <div className="container mx-auto px-4 md:px-8">
         {/* Section header */}
         <div className="text-center mb-16">
-          <span className="text-gold text-sm tracking-[0.25em] uppercase font-medium">
+          <span className="text-primary text-sm tracking-[0.25em] uppercase font-medium">
             O que oferecemos
           </span>
           <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mt-3">
             Nossos Serviços
           </h2>
-          <div className="w-16 h-0.5 bg-gold mx-auto mt-5" />
+          <div className="w-16 h-0.5 bg-primary mx-auto mt-5 opacity-60" />
         </div>
 
         {/* Cards */}
@@ -61,16 +70,26 @@ export default function Services() {
           {services.map((s) => (
             <div
               key={s.title}
-              className="group relative bg-card border border-border rounded-2xl p-8 hover:border-gold/50 transition-all duration-300 hover:shadow-[var(--shadow-gold)]"
+              onClick={() => handleCardClick(s.href)}
+              className={`group relative bg-card border border-border rounded-2xl p-8 hover:border-primary/50 transition-all duration-300 hover:shadow-[var(--shadow-gold)] ${s.href ? "cursor-pointer" : ""}`}
             >
-              {/* Gold top bar */}
-              <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent group-hover:via-gold/70 transition-all duration-300" />
+              {/* Top bar */}
+              <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent group-hover:via-primary/70 transition-all duration-300" />
 
-              <div className="text-gold mb-6">{s.icon}</div>
+              <div className="text-primary mb-6">{s.icon}</div>
               <h3 className="font-display text-xl font-semibold text-foreground mb-3">
                 {s.title}
               </h3>
               <p className="text-muted-foreground text-sm leading-relaxed">{s.description}</p>
+
+              {s.href && (
+                <div className="mt-4 flex items-center gap-1.5 text-primary text-xs font-semibold tracking-wide">
+                  <span>Falar conosco</span>
+                  <svg viewBox="0 0 16 16" className="w-3.5 h-3.5 fill-current" aria-hidden>
+                    <path d="M3.5 8a.5.5 0 0 1 .5-.5h6.293L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4a.5.5 0 0 1-.5-.5z"/>
+                  </svg>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -78,3 +97,4 @@ export default function Services() {
     </section>
   );
 }
+

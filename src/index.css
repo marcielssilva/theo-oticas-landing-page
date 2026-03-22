@@ -2,8 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+/* Definition of the design system — Theo Óticas
+   Dark navy + gold palette, elegant & modern
+   All colors MUST be HSL.
 */
 
 @layer base {

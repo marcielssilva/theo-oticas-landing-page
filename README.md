@@ -1,9 +1,5 @@
 # 🕶️ Theo Óticas — Site Oficial
 
-![Status](https://img.shields.io/badge/status-online-success)
-![Deploy](https://img.shields.io/badge/deploy-vercel-black)
-![License](https://img.shields.io/badge/license-private-informational)
-
 🌐 **Acesse o site:** [https://theo-oticas-oficial.vercel.app/](https://theo-oticas-oficial.vercel.app/)
 
 ---

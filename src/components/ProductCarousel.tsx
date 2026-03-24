@@ -2,22 +2,24 @@ import { useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import framesImg from "@/assets/frames-collection.jpg";
+import framesDetail from "@/assets/frames-detail.jpg";
 import sunglassesImg from "@/assets/sunglasses-collection.jpg";
+import sunglassesDetail from "@/assets/sunglasses-detail.jpg";
 import { useCart, Product } from "@/context/CartContext";
 
 const products: Product[] = [
   // Armações modernas (5)
-  { id: 1, category: "Armação Moderna", name: "Silver Classic", style: "Metal fino • Unissex", tag: "Novo", img: framesImg, material: "Metal fino", gender: "Unissex", description: "Design clean e atemporal em metal fino." },
-  { id: 2, category: "Armação Moderna", name: "Quadrado Titanium", style: "Titanium • Masculino", tag: "Destaque", img: framesImg, material: "Titanium", gender: "Masculino", description: "Formato quadrado com hastes de titanium de alta resistência." },
-  { id: 3, category: "Armação Moderna", name: "Oval Elegance", style: "Aço inox • Feminino", tag: null, img: framesImg, material: "Aço inox", gender: "Feminino", description: "Linhas suaves e femininas em aço inoxidável." },
-  { id: 4, category: "Armação Moderna", name: "Slim Round", style: "Metal fino • Unissex", tag: "Novo", img: framesImg, material: "Metal fino", gender: "Unissex", description: "Armação redonda com perfil ultra-slim." },
-  { id: 5, category: "Armação Moderna", name: "Executive Pro", style: "Titanium • Masculino", tag: null, img: framesImg, material: "Titanium", gender: "Masculino", description: "Modelo executivo de alta performance em titanium premium." },
+  { id: 1, category: "Armação Moderna", name: "Silver Classic", style: "Metal fino • Unissex", tag: "Novo", images: [framesImg, framesDetail], material: "Metal fino", gender: "Unissex", description: "Design clean e atemporal em metal fino." },
+  { id: 2, category: "Armação Moderna", name: "Quadrado Titanium", style: "Titanium • Masculino", tag: "Destaque", images: [framesImg, framesDetail], material: "Titanium", gender: "Masculino", description: "Formato quadrado com hastes de titanium de alta resistência." },
+  { id: 3, category: "Armação Moderna", name: "Oval Elegance", style: "Aço inox • Feminino", tag: null, images: [framesImg, framesDetail], material: "Aço inox", gender: "Feminino", description: "Linhas suaves e femininas em aço inoxidável." },
+  { id: 4, category: "Armação Moderna", name: "Slim Round", style: "Metal fino • Unissex", tag: "Novo", images: [framesImg, framesDetail], material: "Metal fino", gender: "Unissex", description: "Armação redonda com perfil ultra-slim." },
+  { id: 5, category: "Armação Moderna", name: "Executive Pro", style: "Titanium • Masculino", tag: null, images: [framesImg, framesDetail], material: "Titanium", gender: "Masculino", description: "Modelo executivo de alta performance em titanium premium." },
   // Óculos de sol (5)
-  { id: 6, category: "Óculos de Sol", name: "Aviator Premium", style: "UV400 • Unissex", tag: "Mais vendido", img: sunglassesImg, material: "Metal", gender: "Unissex", description: "Clássico Aviator com proteção UV400 completa." },
-  { id: 7, category: "Óculos de Sol", name: "Wayfarer Dark", style: "Polarizado • Masculino", tag: null, img: sunglassesImg, material: "Acetato", gender: "Masculino", description: "Estilo Wayfarer com lentes polarizadas." },
-  { id: 8, category: "Óculos de Sol", name: "Cat-Eye Luxe", style: "UV400 • Feminino", tag: "Destaque", img: sunglassesImg, material: "Acetato", gender: "Feminino", description: "Formato cat-eye sofisticado com acabamento luxuoso." },
-  { id: 9, category: "Óculos de Sol", name: "Shield Sport", style: "Espelhado • Unissex", tag: null, img: sunglassesImg, material: "Policarbonato", gender: "Unissex", description: "Design esportivo com lente única espelhada." },
-  { id: 10, category: "Óculos de Sol", name: "Retro Round", style: "Polarizado • Unissex", tag: "Novo", img: sunglassesImg, material: "Metal + Acetato", gender: "Unissex", description: "Formato redondo retrô com lentes polarizadas." },
+  { id: 6, category: "Óculos de Sol", name: "Aviator Premium", style: "UV400 • Unissex", tag: "Mais vendido", images: [sunglassesImg, sunglassesDetail], material: "Metal", gender: "Unissex", description: "Clássico Aviator com proteção UV400 completa." },
+  { id: 7, category: "Óculos de Sol", name: "Wayfarer Dark", style: "Polarizado • Masculino", tag: null, images: [sunglassesImg, sunglassesDetail], material: "Acetato", gender: "Masculino", description: "Estilo Wayfarer com lentes polarizadas." },
+  { id: 8, category: "Óculos de Sol", name: "Cat-Eye Luxe", style: "UV400 • Feminino", tag: "Destaque", images: [sunglassesImg, sunglassesDetail], material: "Acetato", gender: "Feminino", description: "Formato cat-eye sofisticado com acabamento luxuoso." },
+  { id: 9, category: "Óculos de Sol", name: "Shield Sport", style: "Espelhado • Unissex", tag: null, images: [sunglassesImg, sunglassesDetail], material: "Policarbonato", gender: "Unissex", description: "Design esportivo com lente única espelhada." },
+  { id: 10, category: "Óculos de Sol", name: "Retro Round", style: "Polarizado • Unissex", tag: "Novo", images: [sunglassesImg, sunglassesDetail], material: "Metal + Acetato", gender: "Unissex", description: "Formato redondo retrô com lentes polarizadas." },
 ];
 
 export default function ProductCarousel() {
@@ -58,12 +60,18 @@ export default function ProductCarousel() {
               className="flex-none w-64 md:w-72 group cursor-pointer"
             >
               <div className="bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-[var(--shadow-gold)] transition-all duration-300">
-                {/* Image */}
+                {/* Image with hover second photo */}
                 <div className="relative overflow-hidden aspect-square">
                   <img
-                    src={p.img}
+                    src={p.images[0]}
                     alt={p.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0 absolute inset-0"
+                  />
+                  <img
+                    src={p.images[1]}
+                    alt={`${p.name} detalhe`}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
                   />
                   <span className="absolute top-3 left-3 bg-background/80 backdrop-blur-sm text-primary text-[10px] tracking-widest uppercase font-semibold px-3 py-1 rounded-full border border-primary/30">
                     {p.category === "Armação Moderna" ? "Armação" : "Sol"}

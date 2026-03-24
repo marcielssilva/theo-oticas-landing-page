@@ -6,7 +6,7 @@ export interface Product {
   name: string;
   style: string;
   tag: string | null;
-  img: string;
+  images: string[];
   description: string;
   material: string;
   gender: string;

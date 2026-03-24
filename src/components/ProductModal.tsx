@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, ZoomIn, ShoppingBag, Check } from "lucide-react";
+import { X, ShoppingBag, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { Product } from "@/context/CartContext";
 import { useCart } from "@/context/CartContext";
 
@@ -12,15 +12,20 @@ export default function ProductModal({
 }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
-  const [zoomed, setZoomed] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(0);
 
   if (!product) return null;
+
+  const images = product.images;
 
   const handleAdd = () => {
     addItem(product);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
+
+  const prev = () => setActiveIdx((i) => (i - 1 + images.length) % images.length);
+  const next = () => setActiveIdx((i) => (i + 1) % images.length);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -40,31 +45,63 @@ export default function ProductModal({
           <X className="w-4 h-4" />
         </button>
 
-        {/* Image */}
-        <div
-          className="relative md:w-1/2 aspect-square cursor-zoom-in overflow-hidden bg-secondary/30 flex-shrink-0"
-          onClick={() => setZoomed(!zoomed)}
-        >
-          <img
-            src={product.img}
-            alt={product.name}
-            className={`w-full h-full object-cover transition-transform duration-500 ${
-              zoomed ? "scale-150" : "scale-100"
-            }`}
-          />
-          {!zoomed && (
-            <div className="absolute bottom-3 right-3 bg-background/70 backdrop-blur-sm rounded-full p-2 border border-border">
-              <ZoomIn className="w-4 h-4 text-primary" />
-            </div>
-          )}
-          {/* Category badge */}
-          <span className="absolute top-3 left-3 bg-background/80 backdrop-blur-sm text-primary text-[10px] tracking-widest uppercase font-semibold px-3 py-1 rounded-full border border-primary/30">
-            {product.category === "Armação Moderna" ? "Armação" : "Sol"}
-          </span>
-          {product.tag && (
-            <span className="absolute top-3 right-12 bg-primary text-primary-foreground text-[10px] tracking-wide uppercase font-bold px-2.5 py-1 rounded-full">
-              {product.tag}
+        {/* Image Gallery */}
+        <div className="md:w-1/2 flex-shrink-0 flex flex-col">
+          {/* Main image */}
+          <div className="relative aspect-square overflow-hidden bg-secondary/30 flex-shrink-0">
+            <img
+              src={images[activeIdx]}
+              alt={`${product.name} foto ${activeIdx + 1}`}
+              className="w-full h-full object-cover transition-opacity duration-300"
+            />
+            {/* Nav arrows */}
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={prev}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 p-1.5 bg-background/70 backdrop-blur-sm rounded-full border border-border text-foreground hover:bg-background/90 transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={next}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 bg-background/70 backdrop-blur-sm rounded-full border border-border text-foreground hover:bg-background/90 transition-colors"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </>
+            )}
+            {/* Category badge */}
+            <span className="absolute top-3 left-3 bg-background/80 backdrop-blur-sm text-primary text-[10px] tracking-widest uppercase font-semibold px-3 py-1 rounded-full border border-primary/30">
+              {product.category === "Armação Moderna" ? "Armação" : "Sol"}
             </span>
+            {product.tag && (
+              <span className="absolute top-3 right-12 bg-primary text-primary-foreground text-[10px] tracking-wide uppercase font-bold px-2.5 py-1 rounded-full">
+                {product.tag}
+              </span>
+            )}
+          </div>
+
+          {/* Thumbnails */}
+          {images.length > 1 && (
+            <div className="flex gap-2 p-3 bg-secondary/20">
+              {images.map((img, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveIdx(i)}
+                  className={`flex-1 aspect-square rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                    activeIdx === i ? "border-primary" : "border-transparent opacity-60 hover:opacity-90"
+                  }`}
+                >
+                  <img
+                    src={img}
+                    alt={`Foto ${i + 1}`}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
           )}
         </div>
 

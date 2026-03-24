@@ -1,22 +1,23 @@
-import { useEffect, useRef } from "react";
+import { useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import framesImg from "@/assets/frames-collection.jpg";
 import sunglassesImg from "@/assets/sunglasses-collection.jpg";
+import { useCart, Product } from "@/context/CartContext";
 
-const products = [
+const products: Product[] = [
   // Armações modernas (5)
-  { id: 1, category: "Armação Moderna", name: "Silver Classic", style: "Metal fino • Unissex", tag: "Novo", img: framesImg },
-  { id: 2, category: "Armação Moderna", name: "Quadrado Titanium", style: "Titanium • Masculino", tag: "Destaque", img: framesImg },
-  { id: 3, category: "Armação Moderna", name: "Oval Elegance", style: "Aço inox • Feminino", tag: null, img: framesImg },
-  { id: 4, category: "Armação Moderna", name: "Slim Round", style: "Metal fino • Unissex", tag: "Novo", img: framesImg },
-  { id: 5, category: "Armação Moderna", name: "Executive Pro", style: "Titanium • Masculino", tag: null, img: framesImg },
+  { id: 1, category: "Armação Moderna", name: "Silver Classic", style: "Metal fino • Unissex", tag: "Novo", img: framesImg, material: "Metal fino", gender: "Unissex", description: "Design clean e atemporal em metal fino." },
+  { id: 2, category: "Armação Moderna", name: "Quadrado Titanium", style: "Titanium • Masculino", tag: "Destaque", img: framesImg, material: "Titanium", gender: "Masculino", description: "Formato quadrado com hastes de titanium de alta resistência." },
+  { id: 3, category: "Armação Moderna", name: "Oval Elegance", style: "Aço inox • Feminino", tag: null, img: framesImg, material: "Aço inox", gender: "Feminino", description: "Linhas suaves e femininas em aço inoxidável." },
+  { id: 4, category: "Armação Moderna", name: "Slim Round", style: "Metal fino • Unissex", tag: "Novo", img: framesImg, material: "Metal fino", gender: "Unissex", description: "Armação redonda com perfil ultra-slim." },
+  { id: 5, category: "Armação Moderna", name: "Executive Pro", style: "Titanium • Masculino", tag: null, img: framesImg, material: "Titanium", gender: "Masculino", description: "Modelo executivo de alta performance em titanium premium." },
   // Óculos de sol (5)
-  { id: 6, category: "Óculos de Sol", name: "Aviator Premium", style: "UV400 • Unissex", tag: "Mais vendido", img: sunglassesImg },
-  { id: 7, category: "Óculos de Sol", name: "Wayfarer Dark", style: "Polarizado • Masculino", tag: null, img: sunglassesImg },
-  { id: 8, category: "Óculos de Sol", name: "Cat-Eye Luxe", style: "UV400 • Feminino", tag: "Destaque", img: sunglassesImg },
-  { id: 9, category: "Óculos de Sol", name: "Shield Sport", style: "Espelhado • Unissex", tag: null, img: sunglassesImg },
-  { id: 10, category: "Óculos de Sol", name: "Retro Round", style: "Polarizado • Unissex", tag: "Novo", img: sunglassesImg },
+  { id: 6, category: "Óculos de Sol", name: "Aviator Premium", style: "UV400 • Unissex", tag: "Mais vendido", img: sunglassesImg, material: "Metal", gender: "Unissex", description: "Clássico Aviator com proteção UV400 completa." },
+  { id: 7, category: "Óculos de Sol", name: "Wayfarer Dark", style: "Polarizado • Masculino", tag: null, img: sunglassesImg, material: "Acetato", gender: "Masculino", description: "Estilo Wayfarer com lentes polarizadas." },
+  { id: 8, category: "Óculos de Sol", name: "Cat-Eye Luxe", style: "UV400 • Feminino", tag: "Destaque", img: sunglassesImg, material: "Acetato", gender: "Feminino", description: "Formato cat-eye sofisticado com acabamento luxuoso." },
+  { id: 9, category: "Óculos de Sol", name: "Shield Sport", style: "Espelhado • Unissex", tag: null, img: sunglassesImg, material: "Policarbonato", gender: "Unissex", description: "Design esportivo com lente única espelhada." },
+  { id: 10, category: "Óculos de Sol", name: "Retro Round", style: "Polarizado • Unissex", tag: "Novo", img: sunglassesImg, material: "Metal + Acetato", gender: "Unissex", description: "Formato redondo retrô com lentes polarizadas." },
 ];
 
 const WHATSAPP_URL =

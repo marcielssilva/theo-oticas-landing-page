@@ -1,266 +1,252 @@
-🕶️ Theo Óticas — Landing Page Oficial
+# 🕶️ Theo Óticas — Landing Page Oficial
 
-🌐 Acesse o site: https://theo-oticas-oficial.vercel.app/
-📌 Sobre o Projeto
+🌐 **Acesse o site:** https://theo-oticas-oficial.vercel.app/
 
-Este repositório contém o site oficial da Theo Óticas, desenvolvido como uma landing page moderna com catálogo interativo e carrinho, focada em conversão direta via WhatsApp.
+---
+
+## 📌 Sobre o Projeto
+
+Este repositório contém o site oficial da **Theo Óticas**, desenvolvido como uma **landing page moderna com catálogo interativo e carrinho**, focada em **conversão direta via WhatsApp**.
 
 O projeto combina apresentação institucional com uma experiência de navegação que permite ao usuário:
 
-    Explorar produtos
+- Explorar produtos  
+- Adicionar itens ao carrinho  
+- Finalizar o contato com mensagem automática no WhatsApp  
 
-    Adicionar itens ao carrinho
+---
 
-    Finalizar o contato com mensagem automática no WhatsApp
+## 🎯 Objetivo
 
-🎯 Objetivo
+- Apresentar a marca Theo Óticas de forma profissional  
+- Gerar leads qualificados via WhatsApp  
+- Oferecer uma experiência de catálogo simples e rápida  
+- Direcionar usuários para Instagram  
+- Aumentar conversão de clientes locais (Itapetininga e região)  
 
-    Apresentar a marca Theo Óticas de forma profissional
+---
 
-    Gerar leads qualificados via WhatsApp
-
-    Oferecer uma experiência de catálogo simples e rápida
-
-    Direcionar usuários para Instagram
-
-    Aumentar conversão de clientes locais (Itapetininga e região)
-
-🧠 Estratégia do Produto
+## 🧠 Estratégia do Produto
 
 O site segue um fluxo direto de conversão:
 
-    Impacto visual (Hero)
+1. **Impacto visual (Hero)**  
+2. **Prova de valor (Serviços + diferenciais)**  
+3. **Exploração (Catálogo + Carrossel de produtos)**  
+4. **Engajamento (Carrinho)**  
+5. **Conversão (WhatsApp com mensagem automática)**  
 
-    Prova de valor (Serviços + diferenciais)
+---
 
-    Exploração (Catálogo + Carrossel de produtos)
+## 🧱 Arquitetura do Projeto
 
-    Engajamento (Carrinho)
+### 📂 Estrutura de pastas
 
-    Conversão (WhatsApp com mensagem automática)
-
-🧱 Arquitetura do Projeto
-📂 Estrutura de pastas
 
 src/
- ├── assets/          # Imagens e recursos
- ├── components/      # Componentes da UI
- ├── components/ui/   # Biblioteca base (shadcn/ui)
- ├── context/         # Estados globais (Cart, Theme)
- ├── hooks/           # Hooks customizados
- ├── lib/             # Utilitários
- ├── pages/           # Páginas (Index, NotFound)
- ├── test/            # Testes (Vitest)
- ├── App.tsx          # Providers + rotas
- ├── main.tsx         # Entry point
+├── assets/ # Imagens e recursos
+├── components/ # Componentes da UI
+├── components/ui/ # Biblioteca base (shadcn/ui)
+├── context/ # Estados globais (Cart, Theme)
+├── hooks/ # Hooks customizados
+├── lib/ # Utilitários
+├── pages/ # Páginas (Index, NotFound)
+├── test/ # Testes (Vitest)
+├── App.tsx # Providers + rotas
+├── main.tsx # Entry point
 
-🔄 Fluxo da Aplicação
+
+---
+
+## 🔄 Fluxo da Aplicação
+
 
 main.tsx
-   ↓
+↓
 App.tsx (Providers + Router)
-   ↓
+↓
 pages/Index.tsx
-   ↓
+↓
 Seções (Header → Hero → Services → Produtos → Contato → Footer)
 
-🧩 Principais Componentes
-🔝 Header
 
-    Navegação com scroll suave
+---
 
-    Menu mobile
+## 🧩 Principais Componentes
 
-    Botão de WhatsApp
+### 🔝 Header
+- Navegação com scroll suave
+- Menu mobile
+- Botão de WhatsApp
+- Alternância de tema (dark/light)
 
-    Alternância de tema (dark/light)
+---
 
-🚀 Hero
+### 🚀 Hero
+- Headline de conversão
+- CTA para WhatsApp
+- CTA para Instagram
+- Destaque de localização (Itapetininga - SP)
 
-    Headline de conversão
+---
 
-    CTA para WhatsApp
+### ⭐ Services
+- Armações modernas  
+- Óculos de sol  
+- Atendimento personalizado  
 
-    CTA para Instagram
+---
 
-    Destaque de localização (Itapetininga - SP)
+### 🛍️ Produtos
 
-⭐ Services
+#### 🔄 ProductCarousel
+- Carrossel com autoplay (Embla)
+- Destaque visual de produtos
 
-    Armações modernas
+#### 📦 ProductCatalog
+- Listagem completa
+- Filtro por categoria
+- Busca por nome
+- Abertura de modal
 
-    Óculos de sol
+#### 🔍 ProductModal
+- Detalhes do produto
+- Imagens
+- Informações técnicas
+- Botão de adicionar ao carrinho
 
-    Atendimento personalizado
+---
 
-🛍️ Produtos
-🔄 ProductCarousel
+### 🛒 Carrinho (CartDrawer)
 
-    Carrossel com autoplay (Embla)
+- Controle de quantidade
+- Remoção de itens
+- Limpeza do carrinho
+- Geração automática de mensagem para WhatsApp
 
-    Destaque visual de produtos
+---
 
-📦 ProductCatalog
+### 📍 Contact
+- Endereço com link para Maps
+- WhatsApp
+- Instagram
 
-    Listagem completa
+---
 
-    Filtro por categoria
+### 📣 CTA Final
+- Reforço de conversão
+- Ação imediata
 
-    Busca por nome
+---
 
-    Abertura de modal
+### 🔻 Footer
+- Informações institucionais
+- Links rápidos
+- Ano dinâmico
 
-🔍 ProductModal
+---
 
-    Detalhes do produto
+## 🧠 Estado Global
 
-    Imagens
-
-    Informações técnicas
-
-    Botão de adicionar ao carrinho
-
-🛒 Carrinho (CartDrawer)
-
-    Controle de quantidade
-
-    Remoção de itens
-
-    Limpeza do carrinho
-
-    Geração automática de mensagem para WhatsApp
-
-📍 Contact
-
-    Endereço com link para Maps
-
-    WhatsApp
-
-    Instagram
-
-📣 CTA Final
-
-    Reforço de conversão
-
-    Ação imediata
-
-🔻 Footer
-
-    Informações institucionais
-
-    Links rápidos
-
-    Ano dinâmico
-
-🧠 Estado Global
-🛒 CartContext
+### 🛒 CartContext
 
 Responsável por:
 
-    Adicionar/remover produtos
-
-    Atualizar quantidade
-
-    Calcular total
-
-    Gerar link do WhatsApp com mensagem dinâmica
+- Adicionar/remover produtos  
+- Atualizar quantidade  
+- Calcular total  
+- Gerar link do WhatsApp com mensagem dinâmica  
 
 📌 Exemplo de mensagem gerada:
 
+
 Olá! Gostaria de pedir:
 
-- Óculos X (2x)
-- Óculos Y (1x)
+Óculos X (2x)
+Óculos Y (1x)
 
-🌙 ThemeContext
+---
 
-    Alternância dark/light
+### 🌙 ThemeContext
 
-    Persistência em localStorage
+- Alternância dark/light  
+- Persistência em `localStorage`  
+- Aplicação via classe no HTML  
 
-    Aplicação via classe no HTML
+---
 
-⚙️ Tecnologias Utilizadas
-Frontend
+## ⚙️ Tecnologias Utilizadas
 
-    React 18
+### Frontend
 
-    TypeScript
+- React 18  
+- TypeScript  
+- Vite  
 
-    Vite
+### UI & Estilo
 
-UI & Estilo
+- Tailwind CSS  
+- shadcn/ui  
+- Radix UI  
+- Lucide Icons  
 
-    Tailwind CSS
+### Funcionalidades
 
-    shadcn/ui
+- React Router DOM  
+- React Hook Form  
+- Zod  
+- Embla Carousel  
+- Sonner (toasts)  
 
-    Radix UI
+### Estado e dados
 
-    Lucide Icons
+- Context API  
+- TanStack React Query *(infra preparada, pouco utilizada atualmente)*  
 
-Funcionalidades
+### Testes
 
-    React Router DOM
+- Vitest  
+- Playwright  
 
-    React Hook Form
+---
 
-    Zod
+## ⚡ Funcionalidades
 
-    Embla Carousel
+- 📲 Integração direta com WhatsApp  
+- 🛒 Carrinho com geração automática de pedido  
+- 🔍 Catálogo com busca e filtros  
+- 🎠 Carrossel de produtos  
+- 🌙 Tema escuro/claro  
+- 📱 Layout totalmente responsivo  
+- 📜 Scroll suave  
+- 🔔 Feedback visual (toasts)  
 
-    Sonner (toasts)
+---
 
-Estado e dados
-
-    Context API
-
-    TanStack React Query (infra preparada, pouco utilizada atualmente)
-
-Testes
-
-    Vitest
-
-    Playwright
-
-⚡ Funcionalidades
-
-    📲 Integração direta com WhatsApp
-
-    🛒 Carrinho com geração automática de pedido
-
-    🔍 Catálogo com busca e filtros
-
-    🎠 Carrossel de produtos
-
-    🌙 Tema escuro/claro
-
-    📱 Layout totalmente responsivo
-
-    📜 Scroll suave
-
-    🔔 Feedback visual (toasts)
-
-📱 Responsividade
+## 📱 Responsividade
 
 Compatível com:
 
-    📱 Mobile (prioridade)
+- 📱 Mobile (prioridade)  
+- 📲 Tablet  
+- 💻 Desktop  
 
-    📲 Tablet
+---
 
-    💻 Desktop
+## 📍 Informações da Empresa
 
-📍 Informações da Empresa
+**Nome:** Theo Óticas  
+**Endereço:** Rua Coronel Pedro Dias Batista, BOX 04  
+Mercadão Municipal — Centro / Itapetininga  
 
-Nome: Theo Óticas
-Endereço: Rua Coronel Pedro Dias Batista, BOX 04
-Mercadão Municipal — Centro / Itapetininga
+**WhatsApp:** (15) 99686-9669  
+**Instagram:** https://www.instagram.com/theo.oticas  
 
-WhatsApp: (15) 99686-9669
-Instagram: https://www.instagram.com/theo.oticas
-🚀 Como rodar o projeto
+---
 
+## 🚀 Como rodar o projeto
+
+```bash
 # Clonar repositório
 git clone https://github.com/marcielssilva/theo-oticas-landing-page
 
@@ -273,6 +259,7 @@ npm install
 # Rodar projeto
 npm run dev
 
+
 🧪 Testes
 
 # Rodar testes unitários
@@ -282,31 +269,26 @@ npm run test
 npm run test:e2e
 
 ⚠️ Pontos de Atenção
-
-    O catálogo está hardcoded no frontend
-
-    Não há backend ou banco de dados
-
-    Produtos estão duplicados entre componentes
-
-    React Query está presente mas pouco utilizado
-
+O catálogo está hardcoded no frontend
+Não há backend ou banco de dados
+Produtos estão duplicados entre componentes
+React Query está presente mas pouco utilizado
 🔧 Melhorias Futuras
+🗄️ Integração com backend / API
+🛒 Persistência do carrinho (localStorage ou backend)
+📦 Centralização dos produtos (evitar duplicação)
+📊 Integração com Google Analytics / Meta Pixel
+🔍 SEO local otimizado
+⭐ Avaliações de clientes
+🧭 Integração com Google Maps embed
+🧾 Página de pedido detalhado
+🛍️ Checkout mais estruturado
 
-    🗄️ Integração com backend / API
+💡 Resumo
 
-    🛒 Persistência do carrinho (localStorage ou backend)
+O projeto evoluiu de uma landing page simples para uma mini experiência de e-commerce focada em WhatsApp, mantendo:
 
-    📦 Centralização dos produtos (evitar duplicação)
-
-    📊 Integração com Google Analytics / Meta Pixel
-
-    🔍 SEO local otimizado
-
-    ⭐ Avaliações de clientes
-
-    🧭 Integração com Google Maps embed
-
-    🧾 Página de pedido detalhado
-
-    🛍️ Checkout mais estruturado
+Simplicidade
+Alta conversão
+Performance
+Facilidade de manutenção

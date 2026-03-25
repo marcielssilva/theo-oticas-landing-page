@@ -43,12 +43,12 @@ export default function Header() {
         </a>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className=" text-white hidden md:flex items-center gap-8">
           {navLinks.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-foreground/70 hover:text-primary text-sm font-medium tracking-wide transition-colors duration-200"
+              className=" text-white text-foreground/70 hover:text-primary text-sm font-medium tracking-wide transition-colors duration-200"
             >
               {l.label}
             </a>

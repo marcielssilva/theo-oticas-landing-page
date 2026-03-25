@@ -44,16 +44,16 @@ O site segue um fluxo direto de conversão:
 
 
 src/
-├── assets/ # Imagens e recursos
-├── components/ # Componentes da UI
-├── components/ui/ # Biblioteca base (shadcn/ui)
-├── context/ # Estados globais (Cart, Theme)
-├── hooks/ # Hooks customizados
-├── lib/ # Utilitários
-├── pages/ # Páginas (Index, NotFound)
-├── test/ # Testes (Vitest)
-├── App.tsx # Providers + rotas
-├── main.tsx # Entry point
+ ├── assets/          # Imagens e recursos
+ ├── components/      # Componentes da UI
+ ├── components/ui/   # Biblioteca base (shadcn/ui)
+ ├── context/         # Estados globais (Cart, Theme)
+ ├── hooks/           # Hooks customizados
+ ├── lib/             # Utilitários
+ ├── pages/           # Páginas (Index, NotFound)
+ ├── test/            # Testes (Vitest)
+ ├── App.tsx          # Providers + rotas
+ ├── main.tsx         # Entry point
 
 
 ---

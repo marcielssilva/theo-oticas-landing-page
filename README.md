@@ -1,40 +1,52 @@
 # 🕶️ Theo Óticas — Landing Page Oficial
 
-🌐 **Acesse o site:** https://theo-oticas-oficial.vercel.app/
+<p align="center">
+  <a href="https://theo-oticas-oficial.vercel.app/">
+    🌐 Acesse o site
+  </a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18-blue" />
+  <img src="https://img.shields.io/badge/TypeScript-✔-blue" />
+  <img src="https://img.shields.io/badge/Vite-fast-yellow" />
+  <img src="https://img.shields.io/badge/TailwindCSS-styled-38B2AC" />
+  <img src="https://img.shields.io/badge/Deploy-Vercel-black" />
+</p>
 
 ---
 
 ## 📌 Sobre o Projeto
 
-Este repositório contém o site oficial da **Theo Óticas**, desenvolvido como uma **landing page moderna com catálogo interativo e carrinho**, focada em **conversão direta via WhatsApp**.
+Este projeto é o site oficial da **Theo Óticas**, desenvolvido como uma **landing page moderna com catálogo interativo e carrinho**, focada em **conversão direta via WhatsApp**.
 
-O projeto combina apresentação institucional com uma experiência de navegação que permite ao usuário:
+A aplicação une apresentação institucional com uma experiência simples de compra:
 
-- Explorar produtos  
-- Adicionar itens ao carrinho  
-- Finalizar o contato com mensagem automática no WhatsApp  
+- 🛍️ Visualização de produtos  
+- ➕ Adição ao carrinho  
+- 📲 Envio automático do pedido via WhatsApp  
 
 ---
 
 ## 🎯 Objetivo
 
-- Apresentar a marca Theo Óticas de forma profissional  
-- Gerar leads qualificados via WhatsApp  
-- Oferecer uma experiência de catálogo simples e rápida  
-- Direcionar usuários para Instagram  
-- Aumentar conversão de clientes locais (Itapetininga e região)  
+- Apresentar a marca de forma profissional  
+- Gerar leads qualificados  
+- Facilitar contato direto via WhatsApp  
+- Exibir produtos de forma simples e rápida  
+- Aumentar conversão local  
 
 ---
 
-## 🧠 Estratégia do Produto
+## 🧠 Estratégia de Conversão
 
-O site segue um fluxo direto de conversão:
+O site segue um fluxo enxuto:
 
-1. **Impacto visual (Hero)**  
-2. **Prova de valor (Serviços + diferenciais)**  
-3. **Exploração (Catálogo + Carrossel de produtos)**  
-4. **Engajamento (Carrinho)**  
-5. **Conversão (WhatsApp com mensagem automática)**  
+1. **Hero (impacto visual)**  
+2. **Serviços (prova de valor)**  
+3. **Produtos (engajamento)**  
+4. **Carrinho (intenção)**  
+5. **WhatsApp (conversão)**  
 
 ---
 
@@ -42,21 +54,20 @@ O site segue um fluxo direto de conversão:
 
 ### 📂 Estrutura de pastas
 
-
+```txt
 src/
  ├── assets/          # Imagens e recursos
- ├── components/      # Componentes da UI
- ├── components/ui/   # Biblioteca base (shadcn/ui)
+ ├── components/      # Componentes da aplicação
+ │   └── ui/          # Biblioteca base (shadcn/ui)
  ├── context/         # Estados globais (Cart, Theme)
  ├── hooks/           # Hooks customizados
  ├── lib/             # Utilitários
  ├── pages/           # Páginas (Index, NotFound)
  ├── test/            # Testes (Vitest)
  ├── App.tsx          # Providers + rotas
- ├── main.tsx         # Entry point
+ └── main.tsx         # Entry point
 
-
----
+----
 
 ## 🔄 Fluxo da Aplicação
 

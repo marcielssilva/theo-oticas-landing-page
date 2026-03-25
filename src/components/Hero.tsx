@@ -39,10 +39,7 @@ export default function Hero() {
 
           <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6">
             Enxergue o mundo<br />
-            <span
-              className="text-transparent bg-clip-text"
-              style={{ backgroundImage: "var(--gradient-gold)" }}
-            >
+            <span className="text-white">
               com estilo
             </span>
           </h1>

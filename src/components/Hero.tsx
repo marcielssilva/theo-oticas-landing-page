@@ -37,14 +37,14 @@ export default function Hero() {
             ✦ Itapetininga — SP
           </span>
 
-          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6">
+          <h1 className="text-white font-display text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6">
             Enxergue o mundo<br />
             <span className="text-white">
               com estilo
             </span>
           </h1>
 
-          <p className="text-foreground/70 text-lg md:text-xl leading-relaxed mb-10 max-w-lg">
+          <p className="text-white text-foreground/70 text-lg md:text-xl leading-relaxed mb-10 max-w-lg">
             Na Theo Óticas, você encontra armações modernas, óculos de sol e
             atendimento exclusivo para realçar o seu olhar.
           </p>

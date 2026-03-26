@@ -37,7 +37,7 @@ export default function Header() {
           <span className="font-display text-primary text-xl md:text-2xl font-bold tracking-wide">
             Theo
           </span>
-          <span className="text-foreground/80 text-xs tracking-[0.3em] uppercase font-medium -mt-1">
+          <span className="text-white text-xs tracking-[0.3em] uppercase font-medium -mt-1">
             Óticas
           </span>
         </a>

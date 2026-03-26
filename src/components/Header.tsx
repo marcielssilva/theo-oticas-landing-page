@@ -6,10 +6,11 @@ const WHATSAPP_URL =
   "https://wa.me/5515996869669?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!";
 
 const navLinks = [
-  { label: "Início", href: "#inicio" },
-  { label: "Serviços", href: "#servicos" },
-  { label: "Sobre", href: "#sobre" },
-  { label: "Contato", href: "#contato" },
+  { label: "Início", href: "/" },
+  { label: "Catálogo", href: "/catalogo" },
+  { label: "Serviços", href: "/#servicos" },
+  { label: "Sobre", href: "/#sobre" },
+  { label: "Contato", href: "/#contato" },
 ];
 
 export default function Header() {

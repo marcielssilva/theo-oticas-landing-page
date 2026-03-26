@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Sun, Moon } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useTheme } from "@/context/ThemeContext";
 
 const WHATSAPP_URL =
   "https://wa.me/5515996869669?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!";
 
 const navLinks = [
-  { label: "Início", href: "#inicio" },
-  { label: "Serviços", href: "#servicos" },
-  { label: "Sobre", href: "#sobre" },
-  { label: "Contato", href: "#contato" },
+  { label: "Início", href: "/", isRoute: true },
+  { label: "Catálogo", href: "/catalogo", isRoute: true },
+  { label: "Serviços", href: "/#servicos", isRoute: false },
+  { label: "Sobre", href: "/#sobre", isRoute: false },
+  { label: "Contato", href: "/#contato", isRoute: false },
 ];
 
 export default function Header() {
@@ -33,26 +35,36 @@ export default function Header() {
     >
       <div className="container mx-auto px-4 md:px-8 flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
-        <a href="#inicio" className="flex flex-col leading-tight">
+        <Link to="/" className="flex flex-col leading-tight">
           <span className="font-display text-primary text-xl md:text-2xl font-bold tracking-wide">
             Theo
           </span>
-          <span className="text-foreground/80 text-xs tracking-[0.3em] uppercase font-medium -mt-1">
+          <span className="text-white text-xs tracking-[0.3em] uppercase font-medium -mt-1">
             Óticas
           </span>
-        </a>
+        </Link>
 
         {/* Desktop nav */}
-        <nav className=" text-white hidden md:flex items-center gap-8">
-          {navLinks.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className=" text-white text-foreground/70 hover:text-primary text-sm font-medium tracking-wide transition-colors duration-200"
-            >
-              {l.label}
-            </a>
-          ))}
+        <nav className="hidden md:flex items-center gap-8">
+          {navLinks.map((l) =>
+            l.isRoute ? (
+              <Link
+                key={l.href}
+                to={l.href}
+                className="text-foreground/70 hover:text-primary text-sm font-medium tracking-wide transition-colors duration-200"
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <a
+                key={l.href}
+                href={l.href}
+                className="text-foreground/70 hover:text-primary text-sm font-medium tracking-wide transition-colors duration-200"
+              >
+                {l.label}
+              </a>
+            )
+          )}
         </nav>
 
         {/* Right side: theme toggle + CTA */}
@@ -103,16 +115,27 @@ export default function Header() {
       {/* Mobile drawer */}
       {open && (
         <div className="md:hidden bg-card border-t border-border px-4 pb-6 pt-4 flex flex-col gap-4">
-          {navLinks.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              className="text-foreground/80 hover:text-primary text-base font-medium tracking-wide transition-colors"
-            >
-              {l.label}
-            </a>
-          ))}
+          {navLinks.map((l) =>
+            l.isRoute ? (
+              <Link
+                key={l.href}
+                to={l.href}
+                onClick={() => setOpen(false)}
+                className="text-foreground/80 hover:text-primary text-base font-medium tracking-wide transition-colors"
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="text-foreground/80 hover:text-primary text-base font-medium tracking-wide transition-colors"
+              >
+                {l.label}
+              </a>
+            )
+          )}
           <a
             href={WHATSAPP_URL}
             target="_blank"

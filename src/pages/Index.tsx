@@ -2,7 +2,6 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import ProductCarousel from "@/components/ProductCarousel";
-import ProductCatalog from "@/components/ProductCatalog";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import CTASection from "@/components/CTASection";

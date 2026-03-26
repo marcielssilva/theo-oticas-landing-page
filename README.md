@@ -3,6 +3,7 @@
 <p align="center">
   <a href="https://theo-oticas-oficial.vercel.app/">
     🌐 Acesse o site
+    ->https://gamma.app/docs/Theo-Oticas-rbl40u2e8lsnzdp
   </a>
 </p>
 

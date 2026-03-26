@@ -4,7 +4,6 @@
   <a href="https://theo-oticas-oficial.vercel.app/">
     🌐 Acesse o site
   </a>
- ->https://gamma.app/docs/Theo-Oticas-rbl40u2e8lsnzdp
 </p>
 
 <p align="center">

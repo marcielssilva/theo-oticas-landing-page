@@ -7,6 +7,8 @@ import { CartProvider } from "@/context/CartContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Index from "./pages/Index.tsx";
 import Catalog from "./pages/Catalog.tsx";
+import Admin from "./pages/Admin.tsx";
+import AdminLogin from "./pages/AdminLogin.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();

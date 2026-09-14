@@ -1,151 +1,236 @@
-import { useState, useEffect } from "react";
-import { Menu, X, Sun, Moon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { Menu, Moon, ShoppingBag, Sun, X } from "lucide-react";
+import { EXTERNAL_LINK_PROPS, siteConfig, whatsappLink } from "@/config/site";
+import { useCart } from "@/context/CartContext";
 import { useTheme } from "@/context/ThemeContext";
+import { GlassesIcon, WhatsAppIcon } from "@/components/icons/BrandIcons";
+import CartDrawer from "@/components/CartDrawer";
+import { cn } from "@/lib/utils";
 
-const WHATSAPP_URL =
-  "https://wa.me/5515996869669?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!";
-
-const navLinks = [
-  { label: "Início", href: "/", isRoute: true },
-  { label: "Catálogo", href: "/catalogo", isRoute: true },
-  { label: "Serviços", href: "/#servicos", isRoute: false },
-  { label: "Sobre", href: "/#sobre", isRoute: false },
-  { label: "Contato", href: "/#contato", isRoute: false },
+const NAV_LINKS = [
+  { label: "Início", href: "/" },
+  { label: "Catálogo", href: "/catalogo" },
+  { label: "Serviços", href: "/#servicos" },
+  { label: "Sobre", href: "/#sobre" },
+  { label: "Contato", href: "/#contato" },
 ];
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { totalItems } = useCart();
+  const location = useLocation();
+
+  // Só a home tem hero de imagem atrás do header; nas outras rotas ele já
+  // nasce sólido, senão os links ficavam ilegíveis sobre o fundo claro.
+  const overlayMode = location.pathname === "/" && !scrolled && !menuOpen;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Fecha o menu ao navegar — antes ele continuava aberto por cima da página.
+  useEffect(() => setMenuOpen(false), [location]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
+    cn(
+      "relative py-1 text-sm font-medium transition-colors duration-200",
+      "after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0",
+      "after:bg-brand after:transition-transform after:duration-300 hover:after:scale-x-100",
+      isActive ? "text-brand after:scale-x-100" : "text-foreground/70 hover:text-foreground",
+    );
+
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/95 backdrop-blur-md shadow-[0_2px_20px_hsl(220_30%_3%/0.3)]"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="container mx-auto px-4 md:px-8 flex items-center justify-between h-16 md:h-20">
-        {/* Logo */}
-        <Link to="/" className="flex flex-col leading-tight">
-          <span className="font-display text-primary text-xl md:text-2xl font-bold tracking-wide">
-            Theo
-          </span>
-          <span className="text-white text-xs tracking-[0.3em] uppercase font-medium -mt-1">
-            Óticas
-          </span>
-        </Link>
+    <>
+      <a
+        href="#conteudo"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60]
+                   focus:rounded-full focus:bg-brand focus:px-5 focus:py-2.5 focus:text-sm
+                   focus:font-semibold focus:text-brand-foreground"
+      >
+        Pular para o conteúdo
+      </a>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((l) =>
-            l.isRoute ? (
-              <Link
-                key={l.href}
-                to={l.href}
-                className="text-foreground/70 hover:text-primary text-sm font-medium tracking-wide transition-colors duration-200"
-              >
-                {l.label}
-              </Link>
-            ) : (
-              <a
-                key={l.href}
-                href={l.href}
-                className="text-foreground/70 hover:text-primary text-sm font-medium tracking-wide transition-colors duration-200"
-              >
-                {l.label}
-              </a>
-            )
-          )}
-        </nav>
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color] duration-300",
+          overlayMode
+            ? "border-b border-transparent bg-transparent"
+            : "border-b border-border bg-background/90 shadow-card backdrop-blur-md",
+        )}
+      >
+        <div className="container flex h-[var(--header-height)] items-center justify-between gap-4">
+          <Link to="/" className="flex items-center gap-2.5" aria-label={`${siteConfig.name} — início`}>
+            <GlassesIcon className="h-5 w-auto text-brand" />
+            <span className="flex flex-col leading-none">
+              <span className="font-display text-xl font-bold tracking-wide text-foreground">
+                {siteConfig.shortName}
+              </span>
+              <span className="mt-0.5 text-[0.6rem] font-medium uppercase tracking-[0.32em] text-brand">
+                Óticas
+              </span>
+            </span>
+          </Link>
 
-        {/* Right side: theme toggle + CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          {/* Theme toggle */}
-          <button
-            onClick={toggleTheme}
-            aria-label="Alternar tema"
-            className="w-9 h-9 flex items-center justify-center rounded-full border border-border hover:border-primary/50 hover:bg-primary/10 text-foreground/70 hover:text-primary transition-all duration-200"
-          >
-            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </button>
+          <nav className="hidden items-center gap-7 md:flex" aria-label="Navegação principal">
+            {NAV_LINKS.map((link) =>
+              link.href.includes("#") ? (
+                <a key={link.href} href={link.href} className={linkClass({ isActive: false })}>
+                  {link.label}
+                </a>
+              ) : (
+                <NavLink key={link.href} to={link.href} end className={linkClass}>
+                  {link.label}
+                </NavLink>
+              ),
+            )}
+          </nav>
 
-          {/* WhatsApp CTA */}
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm px-5 py-2.5 rounded-full transition-all duration-200 shadow-[var(--shadow-gold)]"
-          >
-            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden>
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.533 5.855L.057 23.776a.5.5 0 0 0 .612.637l6.122-1.607A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.944 9.944 0 0 1-5.17-1.446l-.37-.22-3.635.954.971-3.542-.242-.376A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
-            </svg>
-            WhatsApp
-          </a>
+          <div className="flex items-center gap-1.5 md:gap-2.5">
+            <IconButton
+              onClick={toggleTheme}
+              label={theme === "dark" ? "Usar tema claro" : "Usar tema escuro"}
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4" aria-hidden />
+              ) : (
+                <Moon className="h-4 w-4" aria-hidden />
+              )}
+            </IconButton>
+
+            {/* O carrinho agora vive no header e acompanha o visitante em todas as páginas. */}
+            <IconButton
+              onClick={() => setCartOpen(true)}
+              label={`Abrir carrinho${totalItems > 0 ? ` com ${totalItems} item(ns)` : " (vazio)"}`}
+            >
+              <ShoppingBag className="h-4 w-4" aria-hidden />
+              {totalItems > 0 && (
+                <span
+                  className="absolute -right-1 -top-1 flex h-[18px] min-w-[18px] items-center justify-center
+                             rounded-full bg-brand px-1 text-[10px] font-bold text-brand-foreground"
+                >
+                  {totalItems}
+                </span>
+              )}
+            </IconButton>
+
+            <a
+              href={whatsappLink()}
+              {...EXTERNAL_LINK_PROPS}
+              className="btn-primary btn-md hidden md:inline-flex"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              WhatsApp
+            </a>
+
+            <IconButton
+              className="md:hidden"
+              onClick={() => setMenuOpen((open) => !open)}
+              label={menuOpen ? "Fechar menu" : "Abrir menu"}
+              expanded={menuOpen}
+              controls="menu-mobile"
+            >
+              {menuOpen ? <X className="h-5 w-5" aria-hidden /> : <Menu className="h-5 w-5" aria-hidden />}
+            </IconButton>
+          </div>
         </div>
 
-        {/* Mobile: theme toggle + burger */}
-        <div className="md:hidden flex items-center gap-2">
-          <button
-            onClick={toggleTheme}
-            aria-label="Alternar tema"
-            className="w-9 h-9 flex items-center justify-center rounded-full border border-border hover:border-primary/50 text-foreground/70 hover:text-primary transition-all duration-200"
-          >
-            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </button>
-          <button
-            className="text-foreground p-2"
-            onClick={() => setOpen(!open)}
-            aria-label="Menu"
-          >
-            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-      </div>
+        <div
+          id="menu-mobile"
+          hidden={!menuOpen}
+          className="border-t border-border bg-background/98 backdrop-blur-md md:hidden"
+        >
+          <nav className="container flex flex-col py-3" aria-label="Navegação">
+            {NAV_LINKS.map((link) =>
+              link.href.includes("#") ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="border-b border-border/60 py-3.5 text-base font-medium text-foreground/80 last:border-0"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <NavLink
+                  key={link.href}
+                  to={link.href}
+                  end
+                  onClick={() => setMenuOpen(false)}
+                  className={({ isActive }) =>
+                    cn(
+                      "border-b border-border/60 py-3.5 text-base font-medium last:border-0",
+                      isActive ? "text-brand" : "text-foreground/80",
+                    )
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              ),
+            )}
 
-      {/* Mobile drawer */}
-      {open && (
-        <div className="md:hidden bg-card border-t border-border px-4 pb-6 pt-4 flex flex-col gap-4">
-          {navLinks.map((l) =>
-            l.isRoute ? (
-              <Link
-                key={l.href}
-                to={l.href}
-                onClick={() => setOpen(false)}
-                className="text-foreground/80 hover:text-primary text-base font-medium tracking-wide transition-colors"
-              >
-                {l.label}
-              </Link>
-            ) : (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="text-foreground/80 hover:text-primary text-base font-medium tracking-wide transition-colors"
-              >
-                {l.label}
-              </a>
-            )
-          )}
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold text-sm px-5 py-3 rounded-full mt-2"
-          >
-            Falar no WhatsApp
-          </a>
+            <a
+              href={whatsappLink()}
+              {...EXTERNAL_LINK_PROPS}
+              className="btn-primary btn-md mt-4 mb-2 w-full"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              Falar no WhatsApp
+            </a>
+          </nav>
         </div>
+      </header>
+
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+    </>
+  );
+}
+
+function IconButton({
+  children,
+  label,
+  onClick,
+  className,
+  expanded,
+  controls,
+}: {
+  children: React.ReactNode;
+  label: string;
+  onClick: () => void;
+  className?: string;
+  expanded?: boolean;
+  controls?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      aria-expanded={expanded}
+      aria-controls={controls}
+      className={cn(
+        "relative flex h-9 w-9 items-center justify-center rounded-full border border-border",
+        "text-foreground/70 transition-colors duration-200",
+        "hover:border-brand/50 hover:bg-brand/10 hover:text-brand",
+        className,
       )}
-    </header>
+    >
+      {children}
+    </button>
   );
 }

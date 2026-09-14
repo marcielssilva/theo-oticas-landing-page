@@ -1,167 +1,222 @@
-import { useState } from "react";
-import { X, ShoppingBag, Check, ChevronLeft, ChevronRight } from "lucide-react";
-import { Product } from "@/context/CartContext";
+import { useEffect, useState } from "react";
+import { Check, ChevronLeft, ChevronRight, ShoppingBag, X } from "lucide-react";
+import { CATEGORY_SHORT_LABEL, type Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
+import { useDialog } from "@/hooks/useDialog";
+import { EXTERNAL_LINK_PROPS, whatsappLink } from "@/config/site";
+import { WhatsAppIcon } from "@/components/icons/BrandIcons";
+import { cn } from "@/lib/utils";
 
-export default function ProductModal({
-  product,
-  onClose,
-}: {
+interface ProductModalProps {
   product: Product | null;
   onClose: () => void;
-}) {
+}
+
+export default function ProductModal({ product, onClose }: ProductModalProps) {
+  const open = Boolean(product);
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
-  const [activeIdx, setActiveIdx] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // ESC, trava de scroll, foco preso no modal e devolvido ao fechar.
+  const dialogRef = useDialog<HTMLDivElement>(open, onClose);
+
+  useEffect(() => {
+    setActiveIndex(0);
+    setAdded(false);
+  }, [product?.id]);
+
+  useEffect(() => {
+    if (!added) return;
+    const timer = window.setTimeout(() => setAdded(false), 2000);
+    return () => window.clearTimeout(timer);
+  }, [added]);
 
   if (!product) return null;
 
   const images = product.images;
+  const showPrev = () => setActiveIndex((index) => (index - 1 + images.length) % images.length);
+  const showNext = () => setActiveIndex((index) => (index + 1) % images.length);
 
   const handleAdd = () => {
     addItem(product);
     setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
   };
 
-  const prev = () => setActiveIdx((i) => (i - 1 + images.length) % images.length);
-  const next = () => setActiveIdx((i) => (i + 1) % images.length);
+  const specs = [
+    { label: "Estilo", value: product.style },
+    { label: "Material", value: product.material },
+    { label: "Indicado para", value: product.gender },
+  ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
       <div
-        className="absolute inset-0 bg-background/80 backdrop-blur-md"
+        className="absolute inset-0 bg-background/85 backdrop-blur-md"
         onClick={onClose}
+        aria-hidden
       />
 
-      {/* Modal */}
-      <div className="relative bg-card border border-border rounded-2xl overflow-hidden w-full max-w-2xl shadow-2xl flex flex-col md:flex-row max-h-[90vh]">
-        {/* Close */}
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-produto-titulo"
+        className="relative flex max-h-[90svh] w-full max-w-3xl animate-scale-in flex-col overflow-hidden
+                   rounded-card border border-border bg-card shadow-lifted md:flex-row"
+      >
         <button
+          type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 bg-background/60 backdrop-blur-sm rounded-full border border-border text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="Fechar"
+          className="absolute right-3 top-3 z-10 rounded-full border border-border bg-background/70 p-2
+                     text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
         >
-          <X className="w-4 h-4" />
+          <X className="h-4 w-4" aria-hidden />
         </button>
 
-        {/* Image Gallery */}
-        <div className="md:w-1/2 flex-shrink-0 flex flex-col">
-          {/* Main image */}
-          <div className="relative aspect-square overflow-hidden bg-secondary/30 flex-shrink-0">
+        <div className="flex shrink-0 flex-col md:w-1/2">
+          <div className="relative aspect-square overflow-hidden bg-secondary/40">
             <img
-              src={images[activeIdx]}
-              alt={`${product.name} foto ${activeIdx + 1}`}
-              className="w-full h-full object-cover transition-opacity duration-300"
+              src={images[activeIndex]}
+              alt={`${product.name} — foto ${activeIndex + 1} de ${images.length}`}
+              className="h-full w-full object-cover"
+              decoding="async"
             />
-            {/* Nav arrows */}
+
             {images.length > 1 && (
               <>
-                <button
-                  onClick={prev}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 p-1.5 bg-background/70 backdrop-blur-sm rounded-full border border-border text-foreground hover:bg-background/90 transition-colors"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={next}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 bg-background/70 backdrop-blur-sm rounded-full border border-border text-foreground hover:bg-background/90 transition-colors"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+                <GalleryArrow side="left" onClick={showPrev} label="Foto anterior">
+                  <ChevronLeft className="h-4 w-4" aria-hidden />
+                </GalleryArrow>
+                <GalleryArrow side="right" onClick={showNext} label="Próxima foto">
+                  <ChevronRight className="h-4 w-4" aria-hidden />
+                </GalleryArrow>
               </>
             )}
-            {/* Category badge */}
-            <span className="absolute top-3 left-3 bg-background/80 backdrop-blur-sm text-primary text-[10px] tracking-widest uppercase font-semibold px-3 py-1 rounded-full border border-primary/30">
-              {product.category === "Armação Moderna" ? "Armação" : "Sol"}
+
+            <span
+              className="absolute left-3 top-3 rounded-full border border-brand/30 bg-background/80 px-3 py-1
+                         text-[10px] font-semibold uppercase tracking-[0.16em] text-brand backdrop-blur-sm"
+            >
+              {CATEGORY_SHORT_LABEL[product.category]}
             </span>
-            {product.tag && (
-              <span className="absolute top-3 right-12 bg-primary text-primary-foreground text-[10px] tracking-wide uppercase font-bold px-2.5 py-1 rounded-full">
-                {product.tag}
-              </span>
-            )}
           </div>
 
-          {/* Thumbnails */}
           {images.length > 1 && (
-            <div className="flex gap-2 p-3 bg-secondary/20">
-              {images.map((img, i) => (
+            <div className="flex gap-2 bg-secondary/20 p-3">
+              {images.map((image, index) => (
                 <button
-                  key={i}
-                  onClick={() => setActiveIdx(i)}
-                  className={`flex-1 aspect-square rounded-lg overflow-hidden border-2 transition-all duration-200 ${
-                    activeIdx === i ? "border-primary" : "border-transparent opacity-60 hover:opacity-90"
-                  }`}
+                  key={image}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  aria-label={`Ver foto ${index + 1}`}
+                  aria-current={index === activeIndex}
+                  className={cn(
+                    "aspect-square flex-1 overflow-hidden rounded-lg border-2 transition-all duration-200",
+                    index === activeIndex
+                      ? "border-brand"
+                      : "border-transparent opacity-60 hover:opacity-100",
+                  )}
                 >
-                  <img
-                    src={img}
-                    alt={`Foto ${i + 1}`}
-                    loading="lazy"
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={image} alt="" loading="lazy" className="h-full w-full object-cover" />
                 </button>
               ))}
             </div>
           )}
         </div>
 
-        {/* Info */}
-        <div className="flex flex-col justify-between p-6 md:w-1/2 overflow-y-auto">
-          <div>
-            <p className="text-muted-foreground text-xs tracking-widest uppercase mb-2">
-              {product.category}
-            </p>
-            <h2 className="font-display text-2xl font-bold text-foreground mb-3">
-              {product.name}
-            </h2>
+        <div className="flex flex-col overflow-y-auto p-6 md:w-1/2">
+          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            {product.category}
+          </p>
+          <h2
+            id="modal-produto-titulo"
+            className="mt-2 font-display text-2xl font-bold text-foreground"
+          >
+            {product.name}
+          </h2>
 
-            <div className="space-y-2 mb-5">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Estilo</span>
-                <span className="text-foreground font-medium">{product.style}</span>
+          <dl className="mt-5 space-y-2.5 text-sm">
+            {specs.map((spec) => (
+              <div key={spec.label} className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">{spec.label}</dt>
+                <dd className="text-right font-medium text-foreground">{spec.value}</dd>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Material</span>
-                <span className="text-foreground font-medium">{product.material}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Indicado para</span>
-                <span className="text-foreground font-medium">{product.gender}</span>
-              </div>
-            </div>
+            ))}
+          </dl>
 
-            <p className="text-sm text-muted-foreground leading-relaxed border-t border-border pt-4">
-              {product.description}
-            </p>
-          </div>
+          <p className="mt-5 border-t border-border pt-5 text-sm leading-relaxed text-muted-foreground">
+            {product.description}
+          </p>
 
-          <div className="mt-6 space-y-3">
-            <p className="text-xs text-muted-foreground text-center">
-              Consulte disponibilidade e valores via WhatsApp
-            </p>
+          <div className="mt-auto space-y-2.5 pt-6">
             <button
+              type="button"
               onClick={handleAdd}
-              className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-semibold transition-all duration-300 ${
+              className={cn(
+                "flex w-full items-center justify-center gap-2 rounded-xl py-3.5 font-semibold transition-colors duration-200",
                 added
-                  ? "bg-primary/80 text-primary-foreground"
-                  : "bg-primary text-primary-foreground hover:bg-primary/90"
-              }`}
+                  ? "bg-brand/80 text-brand-foreground"
+                  : "bg-brand text-brand-foreground hover:bg-brand-light",
+              )}
             >
               {added ? (
                 <>
-                  <Check className="w-4 h-4" />
-                  Adicionado!
+                  <Check className="h-4 w-4" aria-hidden />
+                  Adicionado ao carrinho
                 </>
               ) : (
                 <>
-                  <ShoppingBag className="w-4 h-4" />
+                  <ShoppingBag className="h-4 w-4" aria-hidden />
                   Adicionar ao carrinho
                 </>
               )}
             </button>
+
+            {/* Atalho para quem quer só esse modelo e não vai montar uma lista. */}
+            <a
+              href={whatsappLink(
+                `Olá! Vi o modelo ${product.name} (${product.category}) no site e queria saber disponibilidade e valor.`,
+              )}
+              {...EXTERNAL_LINK_PROPS}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-border py-3
+                         text-sm font-medium text-muted-foreground transition-colors
+                         hover:border-brand/50 hover:text-brand"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              Perguntar sobre este modelo
+            </a>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+function GalleryArrow({
+  side,
+  onClick,
+  label,
+  children,
+}: {
+  side: "left" | "right";
+  onClick: () => void;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className={cn(
+        "absolute top-1/2 -translate-y-1/2 rounded-full border border-border bg-background/70 p-2",
+        "text-foreground backdrop-blur-sm transition-colors hover:bg-background",
+        side === "left" ? "left-3" : "right-3",
+      )}
+    >
+      {children}
+    </button>
   );
 }

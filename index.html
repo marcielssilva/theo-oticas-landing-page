@@ -1,23 +1,116 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Set the document title to the name of your application -->
-    <title>Théo Óticas</title>
-    <meta name="description" content="Enxergue o mundo
-com estilo" />
-    <meta name="author" content="@marcielssilva" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-    <!-- TODO: Update og:title to match your application name -->
-    <meta property="og:title" content="Lovable App" />
-    <meta property="og:description" content="Lovable Generated Project" />
+    <title>Theo Óticas — Armações e óculos de sol em Itapetininga (SP)</title>
+    <meta
+      name="description"
+      content="Ótica no Mercadão Municipal de Itapetininga — SP. Armações de grau, óculos de sol com proteção UV400 e atendimento personalizado. Fale com a gente pelo WhatsApp."
+    />
+    <meta name="author" content="Theo Óticas" />
+    <link rel="canonical" href="https://theo-oticas-oficial.vercel.app/" />
+
+    <!-- Cor da barra do navegador acompanha o tema escolhido -->
+    <meta name="theme-color" content="#0d1219" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+
+    <!-- Open Graph / redes sociais -->
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://images.vexels.com/media/users/3/142855/isolated/preview/76cbaa50b1a8bb1409f90fc4689f2a35-icone-de-oculos-pretos.png" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Theo Óticas" />
+    <meta property="og:title" content="Theo Óticas — Enxergue o mundo com estilo" />
+    <meta
+      property="og:description"
+      content="Armações modernas, óculos de sol UV400 e atendimento personalizado no Mercadão Municipal de Itapetininga — SP."
+    />
+    <meta property="og:url" content="https://theo-oticas-oficial.vercel.app/" />
+    <!-- TODO: subir uma foto real da loja em 1200x630 como public/og-image.jpg -->
+    <meta property="og:image" content="https://theo-oticas-oficial.vercel.app/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Vitrine da Theo Óticas em Itapetininga" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
-    <meta name="twitter:image" content="https://images.vexels.com/media/users/3/142855/isolated/preview/76cbaa50b1a8bb1409f90fc4689f2a35-icone-de-oculos-pretos.png" />
+    <meta name="twitter:title" content="Theo Óticas — Enxergue o mundo com estilo" />
+    <meta
+      name="twitter:description"
+      content="Armações modernas, óculos de sol UV400 e atendimento personalizado em Itapetininga — SP."
+    />
+    <meta name="twitter:image" content="https://theo-oticas-oficial.vercel.app/og-image.jpg" />
+
+    <!--
+      Fontes carregadas aqui com preconnect em vez de @import dentro do CSS:
+      o @import só era baixado depois do bundle de estilos, atrasando o texto.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+
+    <!-- Dados estruturados: essenciais para aparecer bem na busca local -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Optician",
+        "name": "Theo Óticas",
+        "image": "https://theo-oticas-oficial.vercel.app/og-image.jpg",
+        "url": "https://theo-oticas-oficial.vercel.app/",
+        "telephone": "+5515996869669",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Rua Coronel Pedro Dias Batista, BOX 04 — Mercadão Municipal",
+          "addressLocality": "Itapetininga",
+          "addressRegion": "SP",
+          "postalCode": "18200-000",
+          "addressCountry": "BR"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": -23.5915,
+          "longitude": -48.0531
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "08:00",
+            "closes": "18:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Saturday",
+            "opens": "08:00",
+            "closes": "13:00"
+          }
+        ],
+        "sameAs": ["https://www.instagram.com/theo.oticas"]
+      }
+    </script>
+
+    <!--
+      Aplica o tema antes da primeira pintura. Sem isso o site piscava claro
+      antes do React montar (FOUC) para quem usa o tema escuro.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theo-theme");
+          var prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+          var theme = stored || (prefersLight ? "light" : "dark");
+          document.documentElement.classList.add(theme);
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute("content", theme === "light" ? "#f2f6fa" : "#0d1219");
+        } catch (e) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
   </head>
 
   <body>

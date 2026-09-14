@@ -1,85 +1,162 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+  type ReactNode,
+} from "react";
+import { siteConfig, whatsappLink } from "@/config/site";
+import type { Product } from "@/data/products";
 
-export interface Product {
-  id: number;
-  category: string;
-  name: string;
-  style: string;
-  tag: string | null;
-  images: string[];
-  description: string;
-  material: string;
-  gender: string;
-}
+export type { Product };
 
 export interface CartItem extends Product {
   quantity: number;
 }
 
-interface CartContextType {
+const STORAGE_KEY = "theo-cart";
+const MAX_QUANTITY = 20;
+
+type CartAction =
+  | { type: "add"; product: Product; quantity: number }
+  | { type: "remove"; id: number }
+  | { type: "setQuantity"; id: number; quantity: number }
+  | { type: "clear" };
+
+function cartReducer(state: CartItem[], action: CartAction): CartItem[] {
+  switch (action.type) {
+    case "add": {
+      const existing = state.find((item) => item.id === action.product.id);
+      if (!existing) {
+        return [...state, { ...action.product, quantity: action.quantity }];
+      }
+      return state.map((item) =>
+        item.id === action.product.id
+          ? { ...item, quantity: Math.min(item.quantity + action.quantity, MAX_QUANTITY) }
+          : item,
+      );
+    }
+
+    case "remove":
+      return state.filter((item) => item.id !== action.id);
+
+    case "setQuantity":
+      if (action.quantity <= 0) return state.filter((item) => item.id !== action.id);
+      return state.map((item) =>
+        item.id === action.id
+          ? { ...item, quantity: Math.min(action.quantity, MAX_QUANTITY) }
+          : item,
+      );
+
+    case "clear":
+      return [];
+
+    default:
+      return state;
+  }
+}
+
+/** Lê o carrinho salvo. Qualquer falha (modo privado, JSON corrompido) vira carrinho vazio. */
+function readStoredCart(): CartItem[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (item): item is CartItem =>
+        typeof item === "object" &&
+        item !== null &&
+        typeof (item as CartItem).id === "number" &&
+        typeof (item as CartItem).quantity === "number",
+    );
+  } catch {
+    return [];
+  }
+}
+
+interface CartContextValue {
   items: CartItem[];
-  addItem: (product: Product) => void;
+  addItem: (product: Product, quantity?: number) => void;
   removeItem: (id: number) => void;
-  updateQty: (id: number, qty: number) => void;
+  updateQty: (id: number, quantity: number) => void;
   clearCart: () => void;
   totalItems: number;
+  isInCart: (id: number) => boolean;
+  /** Link do WhatsApp já com o pedido montado. */
   whatsappUrl: string;
 }
 
-const CartContext = createContext<CartContextType | null>(null);
-
-const BASE_WA = "5515996869669";
+const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, dispatch] = useReducer(cartReducer, [], readStoredCart);
 
-  const addItem = (product: Product) => {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.id === product.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
+  // Persiste o carrinho: antes o cliente perdia tudo ao atualizar a página.
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      /* cota cheia ou navegação privada — o carrinho segue funcionando em memória */
+    }
+  }, [items]);
 
-  const removeItem = (id: number) =>
-    setItems((prev) => prev.filter((i) => i.id !== id));
-
-  const updateQty = (id: number, qty: number) => {
-    if (qty <= 0) return removeItem(id);
-    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, quantity: qty } : i)));
-  };
-
-  const clearCart = () => setItems([]);
-
-  const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
-
-  const whatsappUrl = () => {
-    if (items.length === 0) return `https://wa.me/${BASE_WA}`;
-    const lines = items.map(
-      (i) => `• ${i.quantity}x ${i.name} (${i.category})`
-    );
-    const msg =
-      `Olá! Tenho interesse nos seguintes produtos da Theo Óticas:\n\n` +
-      lines.join("\n") +
-      `\n\nPoderia me passar mais informações e valores?`;
-    return `https://wa.me/${BASE_WA}?text=${encodeURIComponent(msg)}`;
-  };
-
-  return (
-    <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQty, clearCart, totalItems, whatsappUrl: whatsappUrl() }}
-    >
-      {children}
-    </CartContext.Provider>
+  const addItem = useCallback(
+    (product: Product, quantity = 1) => dispatch({ type: "add", product, quantity }),
+    [],
   );
+  const removeItem = useCallback((id: number) => dispatch({ type: "remove", id }), []);
+  const updateQty = useCallback(
+    (id: number, quantity: number) => dispatch({ type: "setQuantity", id, quantity }),
+    [],
+  );
+  const clearCart = useCallback(() => dispatch({ type: "clear" }), []);
+
+  const totalItems = useMemo(
+    () => items.reduce((sum, item) => sum + item.quantity, 0),
+    [items],
+  );
+
+  const isInCart = useCallback((id: number) => items.some((item) => item.id === id), [items]);
+
+  const whatsappUrl = useMemo(() => {
+    if (items.length === 0) return whatsappLink();
+
+    const lines = items.map((item) => `• ${item.quantity}x ${item.name} (${item.category})`);
+    const message = [
+      `Olá! Tenho interesse nos seguintes produtos da ${siteConfig.name}:`,
+      "",
+      ...lines,
+      "",
+      "Poderia me passar disponibilidade e valores?",
+    ].join("\n");
+
+    return whatsappLink(message);
+  }, [items]);
+
+  const value = useMemo<CartContextValue>(
+    () => ({
+      items,
+      addItem,
+      removeItem,
+      updateQty,
+      clearCart,
+      totalItems,
+      isInCart,
+      whatsappUrl,
+    }),
+    [items, addItem, removeItem, updateQty, clearCart, totalItems, isInCart, whatsappUrl],
+  );
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
-export function useCart() {
-  const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart must be used inside CartProvider");
-  return ctx;
+// eslint-disable-next-line react-refresh/only-export-components
+export function useCart(): CartContextValue {
+  const context = useContext(CartContext);
+  if (!context) throw new Error("useCart precisa estar dentro de <CartProvider>.");
+  return context;
 }

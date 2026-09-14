@@ -2,27 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
-
-/* Design System — Theo Óticas
-   Dark: navy + ice-white accents
-   Light: clean white + silver/navy accents
-   All colors MUST be HSL.
-*/
+/* ==========================================================================
+   Theo Óticas — Design tokens
+   Tema escuro (padrão): navy profundo + destaque gelo.
+   Tema claro: branco/azul-gelo + destaque azul royal.
+   Todas as cores em HSL sem o wrapper hsl() para permitir opacidade
+   via Tailwind (ex.: bg-brand/10).
+   ========================================================================== */
 
 @layer base {
-  /* ─── DARK MODE (default) ─── */
   :root {
+    /* Superfícies */
     --background: 220 30% 7%;
     --foreground: 210 30% 96%;
+    --surface: 220 30% 7%;
+    --surface-raised: 220 28% 11%;
+    --surface-sunken: 220 32% 5%;
 
     --card: 220 28% 11%;
     --card-foreground: 210 25% 93%;
-
-    --popover: 220 28% 11%;
+    --popover: 220 28% 12%;
     --popover-foreground: 210 25% 93%;
 
-    /* Ice white accent for dark mode */
+    /* Ação principal */
     --primary: 210 40% 92%;
     --primary-foreground: 220 30% 7%;
 
@@ -30,7 +32,7 @@
     --secondary-foreground: 210 20% 82%;
 
     --muted: 220 22% 14%;
-    --muted-foreground: 220 12% 55%;
+    --muted-foreground: 218 14% 62%;
 
     --accent: 210 40% 92%;
     --accent-foreground: 220 30% 7%;
@@ -38,30 +40,42 @@
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 18% 22%;
-    --input: 220 18% 22%;
+    --border: 220 18% 20%;
+    --input: 220 18% 20%;
     --ring: 210 40% 92%;
 
-    --radius: 0.5rem;
+    /* Destaque da marca */
+    --brand: 210 40% 92%;
+    --brand-light: 210 35% 97%;
+    --brand-dark: 210 25% 68%;
+    --brand-foreground: 220 30% 7%;
 
-    /* Custom tokens — dark */
-    --gold: 210 40% 92%;
-    --gold-light: 210 35% 97%;
-    --gold-dark: 210 25% 68%;
-    --navy: 220 30% 7%;
-    --navy-light: 220 28% 13%;
-    --navy-card: 220 26% 10%;
+    /* Raios e sombras */
+    --radius: 0.625rem;
+    --radius-card: 1.125rem;
 
-    --gradient-gold: linear-gradient(135deg, hsl(210, 35%, 97%), hsl(210, 25%, 75%));
-    --gradient-hero: linear-gradient(135deg, hsl(220, 35%, 5%) 0%, hsl(220, 28%, 10%) 60%, hsl(220, 25%, 14%) 100%);
-    --gradient-overlay: linear-gradient(to right, hsl(220, 35%, 5%, 0.92), hsl(220, 28%, 10%, 0.6));
+    --shadow-brand: 0 10px 30px -12px hsl(210 40% 92% / 0.28);
+    --shadow-card: 0 1px 2px hsl(220 40% 2% / 0.4), 0 12px 32px -16px hsl(220 40% 2% / 0.7);
+    --shadow-lifted: 0 2px 4px hsl(220 40% 2% / 0.4), 0 24px 48px -20px hsl(220 40% 2% / 0.8);
 
-    --shadow-gold: 0 4px 24px hsl(210 40% 92% / 0.18);
-    --shadow-card: 0 8px 32px hsl(220 30% 3% / 0.5);
+    /* Gradientes */
+    --gradient-brand: linear-gradient(135deg, hsl(210 35% 98%), hsl(210 28% 74%));
+    --gradient-hero: linear-gradient(
+      104deg,
+      hsl(220 34% 5% / 0.94) 0%,
+      hsl(220 30% 7% / 0.8) 46%,
+      hsl(220 26% 12% / 0.42) 100%
+    );
+    --gradient-hero-base: linear-gradient(to top, hsl(220 30% 7%) 2%, transparent 34%);
 
-    --font-display: 'Playfair Display', Georgia, serif;
-    --font-body: 'Inter', system-ui, sans-serif;
+    /* Tipografia */
+    --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+    --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
+    /* Layout */
+    --header-height: 4.5rem;
+
+    /* shadcn/ui sidebar */
     --sidebar-background: 220 28% 11%;
     --sidebar-foreground: 210 25% 93%;
     --sidebar-primary: 210 40% 92%;
@@ -72,60 +86,63 @@
     --sidebar-ring: 210 40% 92%;
   }
 
-  /* ─── LIGHT MODE — azul royal + branco ─── */
   .light {
-    --background: 210 40% 96%;
-    --foreground: 217 55% 14%;
+    --background: 210 40% 97%;
+    --foreground: 217 55% 13%;
+    --surface: 210 40% 97%;
+    --surface-raised: 210 46% 93%;
+    --surface-sunken: 217 55% 13%;
 
     --card: 0 0% 100%;
     --card-foreground: 217 50% 12%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 217 50% 12%;
 
-    /* Azul royal vibrante */
-    --primary: 215 85% 48%;
+    --primary: 215 85% 44%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 55% 88%;
+    --secondary: 210 52% 90%;
     --secondary-foreground: 217 55% 18%;
 
-    --muted: 210 40% 91%;
-    --muted-foreground: 215 28% 42%;
+    --muted: 210 40% 92%;
+    --muted-foreground: 215 22% 40%;
 
-    --accent: 215 85% 48%;
+    --accent: 215 85% 44%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 72% 46%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 210 45% 80%;
-    --input: 210 45% 80%;
-    --ring: 215 85% 48%;
+    --border: 212 34% 84%;
+    --input: 212 34% 84%;
+    --ring: 215 85% 44%;
 
-    /* Custom tokens — light azul royal */
-    --gold: 215 85% 48%;
-    --gold-light: 215 80% 62%;
-    --gold-dark: 218 80% 32%;
-    --navy: 217 55% 14%;
-    --navy-light: 210 50% 93%;
-    --navy-card: 0 0% 100%;
+    --brand: 215 85% 44%;
+    --brand-light: 215 80% 58%;
+    --brand-dark: 218 80% 30%;
+    --brand-foreground: 0 0% 100%;
 
-    --gradient-gold: linear-gradient(135deg, hsl(215, 80%, 60%), hsl(218, 85%, 38%));
-    --gradient-hero: linear-gradient(135deg, hsl(218, 70%, 12%) 0%, hsl(215, 65%, 20%) 60%, hsl(212, 58%, 28%) 100%);
-    --gradient-overlay: linear-gradient(to right, hsl(218, 70%, 10%, 0.90), hsl(215, 65%, 18%, 0.55));
+    --shadow-brand: 0 10px 30px -12px hsl(215 85% 44% / 0.4);
+    --shadow-card: 0 1px 2px hsl(215 40% 30% / 0.06), 0 12px 28px -16px hsl(215 40% 25% / 0.22);
+    --shadow-lifted: 0 2px 6px hsl(215 40% 30% / 0.08), 0 24px 48px -20px hsl(215 40% 25% / 0.3);
 
-    --shadow-gold: 0 4px 24px hsl(215 85% 48% / 0.28);
-    --shadow-card: 0 8px 32px hsl(215 60% 20% / 0.10);
+    --gradient-brand: linear-gradient(135deg, hsl(215 82% 56%), hsl(219 86% 34%));
+    --gradient-hero: linear-gradient(
+      104deg,
+      hsl(219 72% 9% / 0.94) 0%,
+      hsl(216 64% 15% / 0.82) 46%,
+      hsl(213 56% 26% / 0.45) 100%
+    );
+    --gradient-hero-base: linear-gradient(to top, hsl(210 40% 97%) 2%, transparent 34%);
 
-    --sidebar-background: 210 50% 93%;
+    --sidebar-background: 210 46% 93%;
     --sidebar-foreground: 217 50% 14%;
-    --sidebar-primary: 215 85% 48%;
+    --sidebar-primary: 215 85% 44%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 210 50% 87%;
     --sidebar-accent-foreground: 217 50% 18%;
-    --sidebar-border: 210 42% 78%;
-    --sidebar-ring: 215 85% 48%;
+    --sidebar-border: 212 34% 82%;
+    --sidebar-ring: 215 85% 44%;
   }
 }
 
@@ -136,14 +153,117 @@
 
   html {
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
     font-family: var(--font-body);
+    font-feature-settings: "cv02", "cv03", "cv04", "ss01";
+    text-rendering: optimizeLegibility;
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  /* Âncoras (#servicos, #contato...) não podem parar embaixo do header fixo. */
+  section[id],
+  [id]:target {
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+  }
+
+  /* Foco visível e consistente em todo elemento interativo. */
+  :where(a, button, input, textarea, select, [tabindex]):focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background rounded-sm;
+  }
+
+  ::selection {
+    background: hsl(var(--brand) / 0.85);
+    color: hsl(var(--brand-foreground));
+  }
+
+  img {
+    /* Evita imagem quebrada estourando o layout enquanto carrega. */
+    max-width: 100%;
+    height: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Ritmo vertical único para todas as seções. */
+  .section {
+    @apply py-20 md:py-28;
+  }
+
+  .eyebrow {
+    @apply text-eyebrow uppercase font-medium text-brand;
+  }
+
+  .rule {
+    @apply block h-px w-14 bg-brand/60;
+  }
+
+  .card-surface {
+    @apply bg-card border border-border rounded-card shadow-card;
+  }
+
+  /* Texto sobre gradiente da marca — usado em números e títulos de destaque. */
+  .text-gradient-brand {
+    background-image: var(--gradient-brand);
+    @apply bg-clip-text text-transparent;
+  }
+
+  /* Botões: uma definição só, reaproveitada em toda a landing. */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-full font-semibold
+           transition-all duration-200 ease-smooth disabled:opacity-60 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand text-brand-foreground shadow-brand
+           hover:bg-brand-light hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-outline {
+    @apply btn border border-brand/45 text-brand
+           hover:border-brand hover:bg-brand/10 hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-lg {
+    @apply px-8 py-3.5 text-base;
+  }
+
+  .btn-md {
+    @apply px-6 py-2.5 text-sm;
+  }
+}
+
+@layer utilities {
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Comprimento de linha confortável para leitura (~65 caracteres). */
+  .measure {
+    max-width: 62ch;
   }
 }

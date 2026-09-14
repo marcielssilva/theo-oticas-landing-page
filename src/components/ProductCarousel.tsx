@@ -1,120 +1,163 @@
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import framesImg from "@/assets/frames-collection.jpg";
-import framesDetail from "@/assets/frames-detail.jpg";
-import sunglassesImg from "@/assets/sunglasses-collection.jpg";
-import sunglassesDetail from "@/assets/sunglasses-detail.jpg";
-import { useCart, Product } from "@/context/CartContext";
-
-const products: Product[] = [
-  // Armações modernas (5)
-  { id: 1, category: "Armação Moderna", name: "Silver Classic", style: "Metal fino • Unissex", tag: "Novo", images: [framesImg, framesDetail], material: "Metal fino", gender: "Unissex", description: "Design clean e atemporal em metal fino." },
-  { id: 2, category: "Armação Moderna", name: "Quadrado Titanium", style: "Titanium • Masculino", tag: "Destaque", images: [framesImg, framesDetail], material: "Titanium", gender: "Masculino", description: "Formato quadrado com hastes de titanium de alta resistência." },
-  { id: 3, category: "Armação Moderna", name: "Oval Elegance", style: "Aço inox • Feminino", tag: null, images: [framesImg, framesDetail], material: "Aço inox", gender: "Feminino", description: "Linhas suaves e femininas em aço inoxidável." },
-  { id: 4, category: "Armação Moderna", name: "Slim Round", style: "Metal fino • Unissex", tag: "Novo", images: [framesImg, framesDetail], material: "Metal fino", gender: "Unissex", description: "Armação redonda com perfil ultra-slim." },
-  { id: 5, category: "Armação Moderna", name: "Executive Pro", style: "Titanium • Masculino", tag: null, images: [framesImg, framesDetail], material: "Titanium", gender: "Masculino", description: "Modelo executivo de alta performance em titanium premium." },
-  // Óculos de sol (5)
-  { id: 6, category: "Óculos de Sol", name: "Aviator Premium", style: "UV400 • Unissex", tag: "Mais vendido", images: [sunglassesImg, sunglassesDetail], material: "Metal", gender: "Unissex", description: "Clássico Aviator com proteção UV400 completa." },
-  { id: 7, category: "Óculos de Sol", name: "Wayfarer Dark", style: "Polarizado • Masculino", tag: null, images: [sunglassesImg, sunglassesDetail], material: "Acetato", gender: "Masculino", description: "Estilo Wayfarer com lentes polarizadas." },
-  { id: 8, category: "Óculos de Sol", name: "Cat-Eye Luxe", style: "UV400 • Feminino", tag: "Destaque", images: [sunglassesImg, sunglassesDetail], material: "Acetato", gender: "Feminino", description: "Formato cat-eye sofisticado com acabamento luxuoso." },
-  { id: 9, category: "Óculos de Sol", name: "Shield Sport", style: "Espelhado • Unissex", tag: null, images: [sunglassesImg, sunglassesDetail], material: "Policarbonato", gender: "Unissex", description: "Design esportivo com lente única espelhada." },
-  { id: 10, category: "Óculos de Sol", name: "Retro Round", style: "Polarizado • Unissex", tag: "Novo", images: [sunglassesImg, sunglassesDetail], material: "Metal + Acetato", gender: "Unissex", description: "Formato redondo retrô com lentes polarizadas." },
-];
+import { products, type Product } from "@/data/products";
+import { useCart } from "@/context/CartContext";
+import ProductCard from "@/components/ProductCard";
+import ProductModal from "@/components/ProductModal";
+import { SectionHeading } from "@/components/layout/Section";
+import { cn } from "@/lib/utils";
 
 export default function ProductCarousel() {
   const { addItem } = useCart();
   const [justAdded, setJustAdded] = useState<number | null>(null);
-  const autoplayRef = useRef(Autoplay({ delay: 2800, stopOnInteraction: false }));
-  const [emblaRef] = useEmblaCarousel(
-    { loop: true, align: "start", slidesToScroll: 1 },
-    [autoplayRef.current]
+  const [selected, setSelected] = useState<Product | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [snapCount, setSnapCount] = useState(0);
+  const feedbackTimer = useRef<number>();
+
+  // Autoplay é desligado para quem pede menos movimento no sistema.
+  const prefersReducedMotion = useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    [],
   );
 
-  const handleAdd = (e: React.MouseEvent, p: Product) => {
-    e.preventDefault();
-    addItem(p);
-    setJustAdded(p.id);
-    setTimeout(() => setJustAdded(null), 1500);
-  };
+  const autoplay = useRef(
+    Autoplay({ delay: 3600, stopOnInteraction: false, stopOnMouseEnter: true }),
+  );
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: "start", containScroll: "trimSnaps" },
+    prefersReducedMotion ? [] : [autoplay.current],
+  );
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const sync = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+      setSnapCount(emblaApi.scrollSnapList().length);
+    };
+
+    sync();
+    emblaApi.on("select", sync).on("reInit", sync);
+    return () => {
+      emblaApi.off("select", sync).off("reInit", sync);
+    };
+  }, [emblaApi]);
+
+  useEffect(() => () => window.clearTimeout(feedbackTimer.current), []);
+
+  const handleAdd = useCallback(
+    (product: Product) => {
+      addItem(product);
+      setJustAdded(product.id);
+      window.clearTimeout(feedbackTimer.current);
+      feedbackTimer.current = window.setTimeout(() => setJustAdded(null), 1600);
+    },
+    [addItem],
+  );
 
   return (
-    <section className="py-20 bg-secondary/30 overflow-hidden">
-      <div className="container mx-auto px-4 md:px-8 mb-12">
-        <div className="text-center">
-          <span className="text-primary text-sm tracking-[0.25em] uppercase font-medium">
-            Coleção
-          </span>
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-3">
-            Nossos Produtos
-          </h2>
-          <div className="w-16 h-0.5 bg-primary mx-auto mt-5 opacity-60" />
-        </div>
-      </div>
+    <>
+      <section id="colecao" className="section overflow-hidden bg-surface-raised">
+        <div className="container">
+          <div className="mb-10 flex flex-col gap-6 md:mb-12 md:flex-row md:items-end md:justify-between">
+            <SectionHeading
+              eyebrow="Coleção"
+              title="Modelos em destaque"
+              align="left"
+              className="mb-0"
+            />
 
-      <div ref={emblaRef} className="overflow-hidden">
-        <div className="flex gap-5 pl-4 md:pl-8">
-          {products.map((p) => (
-            <div
-              key={p.id}
-              className="flex-none w-64 md:w-72 group cursor-pointer"
-            >
-              <div className="bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-[var(--shadow-gold)] transition-all duration-300">
-                {/* Image with hover second photo */}
-                <div className="relative overflow-hidden aspect-square">
-                  <img
-                    src={p.images[0]}
-                    alt={p.name}
-                    className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0 absolute inset-0"
-                  />
-                  <img
-                    src={p.images[1]}
-                    alt={`${p.name} detalhe`}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-                  />
-                  <span className="absolute top-3 left-3 bg-background/80 backdrop-blur-sm text-primary text-[10px] tracking-widest uppercase font-semibold px-3 py-1 rounded-full border border-primary/30">
-                    {p.category === "Armação Moderna" ? "Armação" : "Sol"}
-                  </span>
-                  {p.tag && (
-                    <span className="absolute top-3 right-3 bg-primary text-primary-foreground text-[10px] tracking-wide uppercase font-bold px-2.5 py-1 rounded-full">
-                      {p.tag}
-                    </span>
-                  )}
-                </div>
-
-                {/* Info */}
-                <div className="p-4">
-                  <p className="text-muted-foreground text-xs tracking-widest uppercase mb-1">
-                    {p.category}
-                  </p>
-                  <h3 className="font-display text-base font-semibold text-foreground">
-                    {p.name}
-                  </h3>
-                  <p className="text-muted-foreground text-xs mt-1">{p.style}</p>
-                  <button
-                    onClick={(e) => handleAdd(e, p)}
-                    className={`mt-3 w-full py-2 rounded-lg text-xs font-medium border transition-all duration-300 ${
-                      justAdded === p.id
-                        ? "bg-primary/20 text-primary border-primary/40"
-                        : "bg-transparent text-muted-foreground border-border hover:border-primary/50 hover:text-primary hover:bg-primary/5"
-                    }`}
-                  >
-                    {justAdded === p.id ? "✓ Adicionado" : "+ Carrinho"}
-                  </button>
-                </div>
-              </div>
+            <div className="flex items-center gap-2">
+              <CarouselButton
+                label="Modelo anterior"
+                onClick={() => emblaApi?.scrollPrev()}
+              >
+                <ChevronLeft className="h-4 w-4" aria-hidden />
+              </CarouselButton>
+              <CarouselButton label="Próximo modelo" onClick={() => emblaApi?.scrollNext()}>
+                <ChevronRight className="h-4 w-4" aria-hidden />
+              </CarouselButton>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
 
-      {/* Dots indicator */}
-      <div className="flex justify-center gap-2 mt-8">
-        {[0, 1].map((i) => (
-          <div key={i} className="w-12 h-0.5 rounded-full bg-primary/40" />
-        ))}
-      </div>
-    </section>
+        <div ref={emblaRef} className="overflow-hidden">
+          <div className="container flex gap-5">
+            {products.map((product, index) => (
+              <div key={product.id} className="min-w-0 flex-[0_0_72%] sm:flex-[0_0_46%] lg:flex-[0_0_25%]">
+                <ProductCard
+                  product={product}
+                  onSelect={setSelected}
+                  onAdd={handleAdd}
+                  justAdded={justAdded === product.id}
+                  priority={index < 2}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Antes os "dots" eram dois tracinhos fixos que não indicavam nada. */}
+        {snapCount > 1 && (
+          <div className="container mt-8 flex flex-wrap items-center justify-center gap-1.5">
+            {Array.from({ length: snapCount }).map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => emblaApi?.scrollTo(index)}
+                aria-label={`Ir para o modelo ${index + 1}`}
+                aria-current={index === selectedIndex}
+                className={cn(
+                  "h-1 rounded-full transition-all duration-300 ease-smooth",
+                  index === selectedIndex ? "w-8 bg-brand" : "w-4 bg-border hover:bg-brand/50",
+                )}
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="container mt-10 text-center">
+          <Link
+            to="/catalogo"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-brand
+                       transition-colors hover:text-brand-light"
+          >
+            Ver o catálogo completo
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
+        </div>
+      </section>
+
+      <ProductModal product={selected} onClose={() => setSelected(null)} />
+    </>
+  );
+}
+
+function CarouselButton({
+  children,
+  label,
+  onClick,
+}: {
+  children: React.ReactNode;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-border
+                 text-foreground/70 transition-colors hover:border-brand/50 hover:bg-brand/10 hover:text-brand"
+    >
+      {children}
+    </button>
   );
 }

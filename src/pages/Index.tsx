@@ -1,17 +1,19 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import Services from "@/components/Services";
 import ProductCarousel from "@/components/ProductCarousel";
+import Services from "@/components/Services";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
-const Index = () => {
+export default function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      <main>
+
+      {/* id usado pelo link "pular para o conteúdo" do header */}
+      <main id="conteudo">
         <Hero />
         <ProductCarousel />
         <Services />
@@ -19,9 +21,8 @@ const Index = () => {
         <Contact />
         <CTASection />
       </main>
+
       <Footer />
     </div>
   );
-};
-
-export default Index;
+}
